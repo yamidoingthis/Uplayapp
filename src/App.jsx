@@ -7,20 +7,23 @@ import Bookings from './pages/Bookings';
 import AddBooking from './pages/AddBooking';
 import EditBooking from './pages/EditBooking';
 import MyForm from './pages/MyForm';
+import logo_uplay from './img/logo_uplay.png'
 
 function App() {
   return (
     <Router>
       <ThemeProvider theme={MyTheme}>
-        <AppBar position="static" className="AppBar" sx={{ background: "linear-gradient(to right bottom, #430089, #82ffa1)" }}>
+        <AppBar position="static" className="AppBar" sx={{ background: "#F9A64E" }}>
           <Container>
             <Toolbar disableGutters={true}>
               <Link to="/">
                 <Typography variant="h6" component="div">
-                  Uplay
+                <img src={logo_uplay} alt="Uplay Logo" style={{ height: '40px', marginRight: '10px' }} />
                 </Typography>
               </Link>
-              <Link to="/bookings" ><Typography>Bookings</Typography></Link>
+              <Link to="/bookings" style={{ textDecoration: 'none', color: 'black'}}>
+                <Typography sx={{ fontWeight: 'medium', fontSize:'20px',  '&:hover': { color: '#454545' }, fontFamily: 'Monospace' }}>Bookings</Typography>
+              </Link>
             </Toolbar>
           </Container>
         </AppBar>
