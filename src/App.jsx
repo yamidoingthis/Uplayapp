@@ -7,6 +7,8 @@ import MyTheme from './themes/MyTheme';
 import Bookings from './pages/Bookings';
 import AddBooking from './pages/AddBooking';
 import EditBooking from './pages/EditBooking';
+import Cart from './pages/Cart';
+import Home from './pages/Home';
 import MyForm from './pages/MyForm';
 import logo_uplay from './img/logo_uplay.png'
 import Activities from './pages/Activities';
@@ -41,17 +43,21 @@ function App() {
           <AppBar position="static" className="AppBar">
             <Container>
               <Toolbar disableGutters={true}>
-                <Link to="/">
+                <Link to="/home">
                   <Typography variant="h6" component="div">
                     <img src={logo_uplay} alt="Uplay Logo" style={{ height: '40px', marginRight: '10px' }} />
                   </Typography>
                 </Link>
                 <Box sx={{ flexGrow: 1 }}></Box>
-                <Typography style={{ textDecoration: 'none', color: 'black' }} sx={{ mx: 5 }} component="div">Home</Typography>
-                <Link to="/activities" style={{ textDecoration: 'none', color: 'black' }}><Typography sx={{ mx: 5 }} component="div">Activities</Typography></Link>
-                <Link to="/bookings" style={{ textDecoration: 'none', color: 'black' }}><Typography sx={{ mx: 5 }}>Bookings</Typography></Link>
-                <Typography style={{ textDecoration: 'none', color: 'black' }} sx={{ mx: 5 }} component="div">About Us</Typography>
-                <Typography style={{ textDecoration: 'none', color: 'black' }} sx={{ mx: 5 }} component="div">Your Cart</Typography>
+                <Link to="/home" style={{ textDecoration: 'none', color: 'black' }}>
+                  <Typography component="div" sx={{ mx: 5, "&:hover": { color: 'grey' } }}>Home</Typography>
+                </Link>
+                <Link to="/activities" style={{ textDecoration: 'none', color: 'black' }}><Typography sx={{ mx: 5, "&:hover": { color: 'grey' } }} component="div">Activities</Typography></Link>
+                <Link to="/bookings" style={{ textDecoration: 'none', color: 'black' }}><Typography sx={{ mx: 5, "&:hover": { color: 'grey' } }}>Bookings</Typography></Link>
+                <Typography style={{ textDecoration: 'none', color: 'black' }} sx={{ mx: 5, "&:hover": { color: 'grey' } }} component="div">About Us</Typography>
+                <Link to="/cart" style={{ textDecoration: 'none', color: 'black' }}>
+                  <Typography sx={{ mx: 5, "&:hover": { color: 'grey' } }}>Your Cart</Typography>
+                </Link>
                 {user && (
                   <>
                     <Typography>{user.name}</Typography>
@@ -71,10 +77,12 @@ function App() {
 
           <Container>
             <Routes>
-              <Route path={"/"} element={<Bookings />} />
+              <Route path={"/"} element={<Home />} />
+              <Route path={"/home"} element={<Home />} />
               <Route path={"/bookings"} element={<Bookings />} />
               <Route path={"/addbooking"} element={<AddBooking />} />
               <Route path={"/editbooking/:id"} element={<EditBooking />} />
+              <Route path={"/cart/"} element={<Cart />} />
               <Route path={"/activities"} element={<Activities />} />
               <Route path={"/activity/:id"} element={<Activity />} />
               <Route path={"/addactivity"} element={<AddActivity />} />

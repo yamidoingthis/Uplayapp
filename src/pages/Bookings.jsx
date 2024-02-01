@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Typography, Grid, Card, CardContent, Input, IconButton, Button } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Input, IconButton, Button, Table, TableBody,TableCell,TableContainer,TableHead,TableRow,Paper } from '@mui/material';
 import { AccessTime, Search, Clear, Edit } from '@mui/icons-material';
 import http from '../http';
 import dayjs from 'dayjs';
@@ -47,69 +47,57 @@ function Bookings() {
 
     return (
         <Box>
-            <Typography variant="h5" sx={{ my: 2 }}>
-                Bookings
-            </Typography>
+      <Typography variant="h5" sx={{ my: 2 }}>
+        All Bookings
+      </Typography>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <Input value={search} placeholder="Search"
-                    onChange={onSearchChange}
-                    onKeyDown={onSearchKeyDown} />
-                <IconButton color="primary"
-                    onClick={onClickSearch}>
-                    <Search />
-                </IconButton>
-                <IconButton color="primary"
-                    onClick={onClickClear}>
-                    <Clear />
-                </IconButton>
-                <Box sx={{ flexGrow: 1 }} />
-                <Link to="/addbooking" style={{ textDecoration: 'none' }}>
-                    <Button variant='contained'>
-                        Add
-                    </Button>
-                </Link>
-            </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+        <Input
+          value={search}
+          placeholder="Search"
+          onChange={onSearchChange}
+          onKeyDown={onSearchKeyDown}
+        />
+        <IconButton color="primary" onClick={onClickSearch}>
+          <Search />
+        </IconButton>
+        <IconButton color="primary" onClick={onClickClear}>
+          <Clear />
+        </IconButton>
 
-            <Grid container spacing={2}>
-                {
-                    bookingList.map((booking, i) => {
-                        return (
-                            <Grid item xs={12} md={6} lg={4} key={booking.id}>
-                                <Card>
-                                    <CardContent>
-                                        <Box sx={{ display: 'flex', mb: 1 }}>
-                                            <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                                                {booking.activity}
-                                            </Typography>
-                                            <Link to={`/editbooking/${booking.id}`}>
-                                                <IconButton color="primary" sx={{ padding: '4px' }}>
-                                                    <Edit />
-                                                </IconButton>
-                                            </Link>
-                                        </Box>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}
-                                            color="text.secondary">
-                                            <AccessTime sx={{ mr: 1 }} />
-                                            <Typography>
-                                                {dayjs(booking.createdAt).format(global.datetimeFormat)}
-                                            </Typography>
-                                        </Box>
-                                        <Typography sx={{ whiteSpace: 'pre-wrap' }}>
-                                            Quantity: {booking.quantity}
-                                        </Typography>
-                                        <Typography sx={{ whiteSpace: 'pre-wrap' }}>
-                                            Made by: {booking.name}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        );
-                    })
-                }
-            </Grid>
-        </Box>
-    );
+        <Box sx={{ flexGrow: 1 }} />
+        <Link to="/addbooking" style={{ textDecoration: 'none' }}>
+          <Button variant="contained">Add</Button>
+        </Link>
+      </Box>
+
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Activity</TableCell>
+              <TableCell>Created At</TableCell>
+              <TableCell>Quantity</TableCell>
+              <TableCell>Made By</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {bookingList.map((booking) => (
+              <TableRow key={booking.id}>
+                <TableCell>{booking.activity}</TableCell>
+                <TableCell>
+                  {dayjs(booking.createdAt).format(global.datetimeFormat)}
+                </TableCell>
+                <TableCell>{booking.quantity}</TableCell>
+                <TableCell>{booking.name}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
+  );
 }
+
 
 export default Bookings;

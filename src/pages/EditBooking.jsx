@@ -58,7 +58,7 @@ function EditBooking() {
             http.put(`/booking/${id}`, data)
                 .then((res) => {
                     console.log(res.data);
-                    navigate("/bookings");
+                    navigate("/cart");
                 });
         }
     });

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography, TextField, Button } from '@mui/material';
 import { useFormik } from 'formik';
@@ -8,8 +10,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 
+
 function AddBooking() {
     const navigate = useNavigate();
+    const showToastMessage = () => {
+        toast.success("Booking successfully added to cart", { 
+        });
+      };
 
     const formik = useFormik({
         initialValues: {
@@ -43,14 +50,18 @@ function AddBooking() {
             data.date = new Date(data.date);
             data.time = data.time.trim();
             data.quantity = data.quantity;
-
             data.date = dayjs(data.date).format("DD/MM/YYYY");
             console.log(data.date)
 
             http.post("/booking", data)
                 .then((res) => {
                     console.log(res.data);
-                    navigate("/bookings");
+                    showToastMessage();
+                    navigate("/cart");
+                })
+                .catch((error) => {
+                    console.error(error);
+                    toast.error("Failed to add booking to cart");
                 });
         }
     });
@@ -70,6 +81,8 @@ function AddBooking() {
                     onBlur={formik.handleBlur}
                     error={formik.touched.name && Boolean(formik.errors.name)}
                     helperText={formik.touched.name && formik.errors.name}
+                    sx={{ marginBottom: 2 }}
+
                 />
                 <TextField
                     fullWidth margin="dense" autoComplete="off"
@@ -80,11 +93,13 @@ function AddBooking() {
                     onBlur={formik.handleBlur}
                     error={formik.touched.activity && Boolean(formik.errors.activity)}
                     helperText={formik.touched.activity && formik.errors.activity}
+                    sx={{ marginBottom: 2 }}
                 />
-               <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                         label="Date"
                         name="date"
+                        format="DD/MM/YYYY"
                         value={formik.values.date}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -93,9 +108,10 @@ function AddBooking() {
                             <TextField
                                 fullWidth margin="dense" autoComplete="off"
                                 {...params}
-                                InputLabelProps={{ shrink: true }}    
+                                InputLabelProps={{ shrink: true }}
                                 error={formik.touched.date && Boolean(formik.errors.date)}
                                 helperText={formik.touched.date && formik.errors.date}
+                                sx={{ marginBottom: 2 }}
                             />
                         )}
                     />
@@ -109,8 +125,8 @@ function AddBooking() {
                     onBlur={formik.handleBlur}
                     error={formik.touched.time && Boolean(formik.errors.time)}
                     helperText={formik.touched.time && formik.errors.time}
+                    sx={{ marginBottom: 2 }}
                 />
-
                 <TextField
                     fullWidth margin="dense" autoComplete="off"
                     label="Quantity"
@@ -120,12 +136,14 @@ function AddBooking() {
                     onBlur={formik.handleBlur}
                     error={formik.touched.quantity && Boolean(formik.errors.quantity)}
                     helperText={formik.touched.quantity && formik.errors.quantity}
+                    sx={{ marginBottom: 2 }}
                 />
 
                 <Box sx={{ mt: 2 }}>
-                    <Button variant="contained" type="submit">
+                    <Button variant="contained" type="submit" onClick={showToastMessage}>
                         Add
                     </Button>
+                    <ToastContainer />
                 </Box>
             </Box>
         </Box>
