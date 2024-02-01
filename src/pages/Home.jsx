@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 function Home() {
@@ -37,13 +36,8 @@ function Home() {
         getItems();
     };
 
-    return (
-        <Box>
-            <Typography variant="h5" sx={{ my: 2 }}>
-                Home
-            </Typography>
-        </Box>
-    );
+    // Empty return or you can omit the return statement
+    return null;
 }
 
 export default Home;
