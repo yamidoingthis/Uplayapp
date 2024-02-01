@@ -1,6 +1,7 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-import { Box, Container, AppBar, Toolbar, Typography } from '@mui/material';
+import { Grid, Box, Container, AppBar, Toolbar, Typography, Button, IconButton, Menu, MenuItem } from '@mui/material';
+import { AccountCircle} from '@mui/icons-material';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import MyTheme from './themes/MyTheme';
@@ -15,8 +16,22 @@ import Activities from './pages/Activities';
 import Activity from './pages/Activity';
 import AddActivity from './pages/AddActivity';
 import EditActivity from './pages/EditActivity';
+import AddReview from './pages/AddReview';
+import Reviews from './pages/Reviews';
+import EditReview from './pages/EditReview';
+import ReviewsAdmin from './pages/ReviewsAdmin';
+import DeletedReviewsAdmin from './pages/DeletedReviewsAdmin';
+import EditReviewAdmin from './pages/EditReviewAdmin';
+import RejectedReviewsAdmin from './pages/RejectedReviewsAdmin';
+import AddComplaint from './pages/AddComplaint';
+import Complaints from './pages/Complaints';
+import EditComplaint from './pages/EditComplaint';
+import ComplaintsAdmin from './pages/ComplaintsAdmin';
+import EditComplaintAdmin from './pages/EditComplaintAdmin';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import UserLogin from './pages/UserLogin';
+import UserRegister from './pages/UserRegister';
 import http from './http';
 import UserContext from './contexts/UserContext';
 
@@ -25,8 +40,8 @@ function App() {
 
   useEffect(() => {
     if (localStorage.getItem("accessToken")) {
-      http.get('/Vendor/auth').then((res) => {
-        setUser(res.data.vendor);
+      http.get('/user/auth').then((res) => {
+        setUser(res.data.user);
       });
     }
   }, []);
@@ -36,41 +51,57 @@ function App() {
     window.location = "/";
   };
 
+  const appBarStyle = {
+    backgroundColor: '#f1f7ee',
+  };
+
+  const [menu, setMenu] = useState(null);
+  
+  const handleClick = (event) => {
+    setMenu(event.currentTarget);
+  };
+  
+  const handleClose = () => {
+    setMenu(null);
+  };
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <ThemeProvider theme={MyTheme}>
-          <AppBar position="static" className="AppBar">
+          <AppBar position="static" className="AppBar" sx={appBarStyle} elevation={0}>
             <Container>
               <Toolbar disableGutters={true}>
-                <Link to="/home">
-                  <Typography variant="h6" component="div">
-                    <img src={logo_uplay} alt="Uplay Logo" style={{ height: '40px', marginRight: '10px' }} />
-                  </Typography>
-                </Link>
-                <Box sx={{ flexGrow: 1 }}></Box>
-                <Link to="/home" style={{ textDecoration: 'none', color: 'black' }}>
-                  <Typography component="div" sx={{ mx: 5, "&:hover": { color: 'grey' } }}>Home</Typography>
-                </Link>
-                <Link to="/activities" style={{ textDecoration: 'none', color: 'black' }}><Typography sx={{ mx: 5, "&:hover": { color: 'grey' } }} component="div">Activities</Typography></Link>
-                <Link to="/bookings" style={{ textDecoration: 'none', color: 'black' }}><Typography sx={{ mx: 5, "&:hover": { color: 'grey' } }}>Bookings</Typography></Link>
-                <Typography style={{ textDecoration: 'none', color: 'black' }} sx={{ mx: 5, "&:hover": { color: 'grey' } }} component="div">About Us</Typography>
-                <Link to="/cart" style={{ textDecoration: 'none', color: 'black' }}>
-                  <Typography sx={{ mx: 5, "&:hover": { color: 'grey' } }}>Your Cart</Typography>
-                </Link>
-                {user && (
-                  <>
-                    <Typography>{user.name}</Typography>
-                    <Button onClick={logout}>Logout</Button>
-                  </>
-                )
-                }
-                {!user && (
-                  <>
-                    <Link to="/register" style={{ textDecoration: 'none', color: 'black' }}><Typography>Register</Typography></Link>
-                    <Link to="/login" style={{ textDecoration: 'none', color: 'black' }}><Typography>Login</Typography></Link>
-                  </>
-                )}
+                <Grid container alignItems="center">
+                  <Link to="/home"><img src={logo_uplay} alt="Uplay Logo" style={{ height: '35px' }} /></Link>
+                  <Box sx={{ flexGrow: 1 }}></Box>
+                  <Link to="/home" ><Typography sx={{ mr: 2 }}>Home</Typography></Link>
+                  <Link to="/activities" ><Typography sx={{ mr: 2 }}>Activities</Typography></Link>
+                  <Link to="/bookings" ><Typography sx={{ mr: 2 }}>Bookings</Typography></Link>
+                  <Link to="/reviews" ><Typography sx={{ mr: 2 }}>Reviews</Typography></Link>
+                  <Link to="/issuesraised" ><Typography sx={{ mr: 2 }}>Issues Raised</Typography></Link>
+                  <Typography sx={{ mr: 2 }}>Your Cart</Typography>
+                  <IconButton onClick={handleClick}>
+                    <AccountCircle sx={{ fontSize: 30 }} />
+                  </IconButton>
+                  <Menu anchorEl={menu} open={Boolean(menu)} onClose={handleClose}>
+                    {user ? ([
+                      <MenuItem key="viewProfile" onClick={handleClose}>View Profile</MenuItem>,
+                      <MenuItem key="logout" onClick={() => { handleClose(); logout(); }}>Logout</MenuItem>
+                    ]) : ([
+                      <MenuItem key="login" onClick={handleClose}>
+                        <Link to="/userlogin" style={{ textDecoration: 'none', color: 'black' }}>
+                          <Typography>Login</Typography>
+                        </Link>
+                      </MenuItem>,
+                      <MenuItem key="register" onClick={handleClose}>
+                        <Link to="/userregister" style={{ textDecoration: 'none', color: 'black' }}>
+                          <Typography>Register</Typography>
+                        </Link>
+                      </MenuItem>
+                    ])}
+                  </Menu>
+                </Grid>
               </Toolbar>
             </Container>
           </AppBar>
@@ -87,8 +118,22 @@ function App() {
               <Route path={"/activity/:id"} element={<Activity />} />
               <Route path={"/addactivity"} element={<AddActivity />} />
               <Route path={"/editactivity/:id"} element={<EditActivity />} />
+              <Route path={"/addreview"} element={<AddReview />} />
+              <Route path={"/reviews"} element={<Reviews />} />
+              <Route path={"/editreview/:id"} element={<EditReview />} />
+              <Route path={"/reviewsadmin"} element={<ReviewsAdmin />} />
+              <Route path={"/deletedreviewsadmin"} element={<DeletedReviewsAdmin />} />
+              <Route path={"/moderatereviewadmin/:id"} element={<EditReviewAdmin />} />
+              <Route path={"/rejectedreviewsadmin"} element={<RejectedReviewsAdmin />} />
+              <Route path={"/raiseissue"} element={<AddComplaint />} />
+              <Route path={"/issuesraised"} element={<Complaints />} />
+              <Route path={"/editissue/:id"} element={<EditComplaint />} />
+              <Route path={"/issuesraisedadmin"} element={<ComplaintsAdmin />} />
+              <Route path={"/respondissue/:id"} element={<EditComplaintAdmin />} />
               <Route path={"/register"} element={<Register />} />
               <Route path={"/login"} element={<Login />} />
+              <Route path={"/userregister"} element={<UserRegister />} />
+              <Route path={"/userlogin"} element={<UserLogin />} />
               <Route path={"/form"} element={<MyForm />} />
             </Routes>
           </Container>
