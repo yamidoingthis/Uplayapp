@@ -80,7 +80,7 @@ function Bookings() {
                                     <CardContent>
                                         <Box sx={{ display: 'flex', mb: 1 }}>
                                             <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                                                {booking.name}
+                                                {booking.activity}
                                             </Typography>
                                             <Link to={`/editbooking/${booking.id}`}>
                                                 <IconButton color="primary" sx={{ padding: '4px' }}>
@@ -96,10 +96,10 @@ function Bookings() {
                                             </Typography>
                                         </Box>
                                         <Typography sx={{ whiteSpace: 'pre-wrap' }}>
-                                            Quantity:{booking.quantity}
+                                            Quantity: {booking.quantity}
                                         </Typography>
                                         <Typography sx={{ whiteSpace: 'pre-wrap' }}>
-                                            Made by:
+                                            Made by: {booking.name}
                                         </Typography>
                                     </CardContent>
                                 </Card>
