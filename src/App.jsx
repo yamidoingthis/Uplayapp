@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Grid, Box, Container, AppBar, Toolbar, Typography, Button, IconButton, Menu, MenuItem } from '@mui/material';
 import { AccountCircle} from '@mui/icons-material';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import MyTheme from './themes/MyTheme';
 import Bookings from './pages/Bookings';
@@ -34,6 +35,8 @@ import UserLogin from './pages/UserLogin';
 import UserRegister from './pages/UserRegister';
 import http from './http';
 import UserContext from './contexts/UserContext';
+import EditAccount from './pages/EditAccount';
+import ViewAccount from './pages/ViewAccount';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -65,6 +68,10 @@ function App() {
     setMenu(null);
   };
 
+ 
+
+  
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
@@ -86,7 +93,7 @@ function App() {
                   </IconButton>
                   <Menu anchorEl={menu} open={Boolean(menu)} onClose={handleClose}>
                     {user ? ([
-                      <MenuItem key="viewProfile" onClick={handleClose}>View Profile</MenuItem>,
+                      <Link to="/viewaccount" ><MenuItem key="viewProfile" onClick={handleClose}>View Profile</MenuItem></Link>,
                       <MenuItem key="logout" onClick={() => { handleClose(); logout(); }}>Logout</MenuItem>
                     ]) : ([
                       <MenuItem key="login" onClick={handleClose}>
@@ -99,6 +106,7 @@ function App() {
                           <Typography>Register</Typography>
                         </Link>
                       </MenuItem>
+                      
                     ])}
                   </Menu>
                 </Grid>
@@ -134,6 +142,8 @@ function App() {
               <Route path={"/login"} element={<Login />} />
               <Route path={"/userregister"} element={<UserRegister />} />
               <Route path={"/userlogin"} element={<UserLogin />} />
+              <Route path={"/viewaccount"} element={<ViewAccount />} />
+              <Route path={"/editaccount"} element={<EditAccount />} />
               <Route path={"/form"} element={<MyForm />} />
             </Routes>
           </Container>

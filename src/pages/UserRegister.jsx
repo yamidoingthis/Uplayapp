@@ -14,6 +14,9 @@ function UserRegister() {
         initialValues: {
             name: "",
             email: "",
+            phone: "",
+            nric: "",
+            birthdate: "",
             password: "",
             confirmPassword: ""
         },
@@ -28,6 +31,13 @@ function UserRegister() {
                 .email('Enter a valid email')
                 .max(50, 'Email must be at most 50 characters')
                 .required('Email is required'),
+            phone: yup.string().trim()
+                .matches(/^\d{8}$/, 'Phone number must be exactly 8 digits'),
+            nric: yup.string().trim()
+                .matches(/^\d{3}[A-Za-z]$/, 'NRIC must include last 3 digits and the letter'),
+            birthdate: yup.date()
+                .nullable()
+                .required('Birthdate is required'),
             password: yup.string().trim()
                 .min(8, 'Password must be at least 8 characters')
                 .max(50, 'Password must be at most 50 characters')
@@ -41,11 +51,15 @@ function UserRegister() {
         onSubmit: (data) => {
             data.name = data.name.trim();
             data.email = data.email.trim().toLowerCase();
+            data.phone = data.phone.trim();
+            data.nric = data.nric.trim().toUpperCase();
+            data.birthdate = data.birthdate;
             data.password = data.password.trim();
+            
             http.post("/user/register", data)
                 .then((res) => {
                     console.log(res.data);
-                    navigate("/login");
+                    navigate("/loginuser");
                 })
                 .catch(function (err) {
                     toast.error(`${err.response.data.message}`);
@@ -87,6 +101,38 @@ function UserRegister() {
                 />
                 <TextField
                     fullWidth margin="dense" autoComplete="off"
+                    label="Phone"
+                    name="phone"
+                    value={formik.values.phone}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.phone && Boolean(formik.errors.phone)}
+                    helperText={formik.touched.phone && formik.errors.phone}
+                />
+                <TextField
+                    fullWidth margin="dense" autoComplete="off"
+                    label="NRIC (Last 3 digits and letter)"
+                    name="nric"
+                    value={formik.values.nric}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.nric && Boolean(formik.errors.nric)}
+                    helperText={formik.touched.nric && formik.errors.nric}
+                />
+                <TextField
+                    fullWidth margin="dense" autoComplete="off"
+                    label="Birthdate"
+                    name="birthdate"
+                    type="date"
+                    value={formik.values.birthdate}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.birthdate && Boolean(formik.errors.birthdate)}
+                    helperText={formik.touched.birthdate && formik.errors.birthdate}
+                    InputLabelProps={{ shrink: true }} 
+                />
+                <TextField
+                    fullWidth margin="dense" autoComplete="off"
                     label="Password"
                     name="password" type="password"
                     value={formik.values.password}
@@ -117,3 +163,5 @@ function UserRegister() {
 }
 
 export default UserRegister;
+
+
