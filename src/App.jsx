@@ -95,8 +95,10 @@ function App() {
                   </IconButton>
                   <Menu anchorEl={menu} open={Boolean(menu)} onClose={handleClose}>
                     {user ? ([
-                      <Link to="/viewaccount" ><MenuItem key="viewProfile" onClick={handleClose}>View Profile</MenuItem></Link>,
-                      <MenuItem key="logout" onClick={() => { handleClose(); logout(); }}>Logout</MenuItem>
+                      <Link to="/viewaccount" style={{ textDecoration: 'none', color: 'black' }}>
+                        <MenuItem key="viewProfile" onClick={handleClose}>View Profile</MenuItem>
+                        </Link>,
+                      <MenuItem key="logout" onClick={() => { handleClose(); logout(); }} style={{ color: 'black' }}>Logout</MenuItem>
                     ]) : ([
                       <MenuItem key="login" onClick={handleClose}>
                         <Link to="/userlogin" style={{ textDecoration: 'none', color: 'black' }}>
@@ -130,7 +132,7 @@ function App() {
               <Route path={"/activity/:id"} element={<Activity />} />
               <Route path={"/addactivity"} element={<AddActivity />} />
               <Route path={"/editactivity/:id"} element={<EditActivity />} />
-              <Route path={"/addreview"} element={<AddReview />} />
+              <Route path={"/addreview/:id"} element={<AddReview />} />
               <Route path={"/reviews"} element={<Reviews />} />
               <Route path={"/editreview/:id"} element={<EditReview />} />
               <Route path={"/reviewsadmin"} element={<ReviewsAdmin />} />

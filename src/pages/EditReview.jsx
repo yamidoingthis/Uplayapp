@@ -66,8 +66,7 @@ function EditReview() {
     };
 
     const deleteReview = () => {
-        const updatedReview = { ...review, revStatus: "Deleted"};
-        http.put(`/review/${id}`, updatedReview)
+        http.delete(`/review/${id}`)
         .then((res) => {
             console.log(res.data);
             navigate("/reviews");

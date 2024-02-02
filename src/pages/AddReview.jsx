@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 import { Box, Typography, TextField, Button, Rating, FormControl, FormHelperText, Grid } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -45,7 +45,7 @@ function AddReview() {
 
         onSubmit: (data) => {
             data.RevDesc = data.RevDesc.trim();
-            http.post("/review", data)
+            http.post(`/review/${id}`, data)
                 .then((res) => {
                     console.log(res.data);
                     navigate("/reviews");

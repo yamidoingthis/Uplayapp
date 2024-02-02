@@ -59,7 +59,7 @@ function UserRegister() {
             http.post("/user/register", data)
                 .then((res) => {
                     console.log(res.data);
-                    navigate("/loginuser");
+                    navigate("/userlogin");
                 })
                 .catch(function (err) {
                     toast.error(`${err.response.data.message}`);

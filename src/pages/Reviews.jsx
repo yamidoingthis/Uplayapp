@@ -25,7 +25,7 @@ function Reviews() {
 
     const getReviews = () => {
         http.get('/review').then((res) => {
-            const filteredReviews = res.data.filter(review => review.revStatus !== "Deleted");
+            const filteredReviews = res.data.filter(review => review.revStatus !== "Deleted" && review.revStatus !== "Hidden");
             setReviewList(filteredReviews);
         });
     };

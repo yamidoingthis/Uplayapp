@@ -27,7 +27,7 @@ function EditReviewAdmin() {
             formik.setValues({
                 RevStar: res.data.revStar,
                 RevDesc: res.data.revDesc,
-                RevStatus: res.data.revDesc,
+                RevStatus: res.data.revStatus,
                 RevFlag: res.data.revFlag
             });
         });
