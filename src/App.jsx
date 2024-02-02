@@ -37,6 +37,8 @@ import http from './http';
 import UserContext from './contexts/UserContext';
 import EditAccount from './pages/EditAccount';
 import ViewAccount from './pages/ViewAccount';
+import ActivitiesPriceAscending from './pages/ActivitiesPriceAscending';
+import ActivitiesPriceDescending from './pages/ActivitiesPriceDescending';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -123,6 +125,8 @@ function App() {
               <Route path={"/editbooking/:id"} element={<EditBooking />} />
               <Route path={"/cart/"} element={<Cart />} />
               <Route path={"/activities"} element={<Activities />} />
+              <Route path={"/activitiespriceascending"} element={<ActivitiesPriceAscending />} />
+              <Route path={"/activitiespricedescending"} element={<ActivitiesPriceDescending />} />
               <Route path={"/activity/:id"} element={<Activity />} />
               <Route path={"/addactivity"} element={<AddActivity />} />
               <Route path={"/editactivity/:id"} element={<EditActivity />} />

@@ -8,10 +8,8 @@ import http from '../http';
 import dayjs from 'dayjs';
 import UserContext from '../contexts/UserContext';
 import global from '../global';
-import ActivitiesPriceAscending from './ActivitiesPriceAscending';
-import ActivitiesPriceDescending from './ActivitiesPriceDescending';
 
-function Activities() {
+function ActivitiesPriceDescending() {
     const [tutorialList, setTutorialList] = useState([]);
     const [search, setSearch] = useState('');
     const { user } = useContext(UserContext);
@@ -22,7 +20,7 @@ function Activities() {
     };
 
     const getTutorials = () => {
-        http.get('/Activity').then((res) => {
+        http.get('/Activity/sortedpricedescending').then((res) => {
             console.log(res.data);
             setTutorialList(res.data);
         });
@@ -162,4 +160,4 @@ function Activities() {
     );
 }
 
-export default Activities;
+export default ActivitiesPriceDescending;
