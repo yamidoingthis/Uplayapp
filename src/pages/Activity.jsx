@@ -12,6 +12,7 @@ function Activity() {
     const { id } = useParams();
     const [activity, setActivity] = useState([]);
     const { user } = useContext(UserContext);
+    const navigate = useNavigate();
 
     const getActivity = () => {
         http.get(`/Activity/${id}`).then((res) => {
@@ -22,6 +23,10 @@ function Activity() {
     useEffect(() => {
         getActivity();
     }, []);
+
+    const handleAddBooking = () => {
+        navigate(`/addbooking?name=${activity.name}&price=${activity.price}`);
+    };
 
     return (
         <Box sx={{ my: 5, display: 'flex' }}>
@@ -48,6 +53,10 @@ function Activity() {
                     <Typography sx={{ whiteSpace: 'pre-wrap' }}>
                         Price: ${activity.price}
                     </Typography>
+                    {/* Add Booking Button */}
+                    <Button variant="contained" color="primary" onClick={handleAddBooking}>
+                        Add Booking
+                    </Button>
                 </Grid>
                 <Grid item xs={12} md={6} lg={4}>
                     {

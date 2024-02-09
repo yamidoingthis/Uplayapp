@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Box, Typography, Grid, Card, CardContent, Input, IconButton, Button } from '@mui/material';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import { AccessTime, Search, Clear, Edit, Delete, ShoppingCart } from '@mui/icons-material';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import http from '../http';
 import dayjs from 'dayjs';
 import global from '../global';
@@ -71,6 +73,26 @@ function Cart() {
             });
     }
 
+    
+
+    const handleCheckout = (bookingId) => {
+        http.put(`/booking/status/${bookingId}`)
+            .then((res) => {
+                console.log(res.data);
+                // Add any additional logic you need after a successful checkout
+                toast.success("Checkout successful!");
+            })
+            .catch((error) => {
+                console.error("Checkout failed:", error);
+                toast.error("Checkout failed");
+
+            });
+    };
+
+
+
+
+
     return (
         <Box>
             <Typography variant="h5" sx={{ my: 2 }}>
@@ -89,12 +111,16 @@ function Cart() {
                     onClick={onClickClear}>
                     <Clear />
                 </IconButton>
-               
+
             </Box>
 
             <Grid container spacing={2}>
                 {
                     bookingList.map((booking, i) => {
+                        // Check if the status is Confirmed
+                        if (booking.status === 'Confirmed') {
+                            return null; 
+                        }
                         return (
                             <Grid item xs={12} md={12} lg={12} key={booking.id}>
                                 <Card>
@@ -108,12 +134,12 @@ function Cart() {
                                                     <Edit />
                                                 </IconButton>
                                             </Link>
-                                           
-                                                <IconButton color="error" sx={{ padding: '4px' }} onClick={() => handleClickOpenDeleteDialog(booking.id)} >
-                                                    <Delete />
-                                                </IconButton>
-                                                
-                                            
+
+                                            <IconButton color="error" sx={{ padding: '4px' }} onClick={() => handleClickOpenDeleteDialog(booking.id)} >
+                                                <Delete />
+                                            </IconButton>
+
+
                                         </Box>
                                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}
                                             color="text.secondary">
@@ -134,10 +160,14 @@ function Cart() {
                                         <Typography sx={{ whiteSpace: 'pre-wrap' }}>
                                             Made by: {booking.name}
                                         </Typography>
+                                       
                                     </CardContent>
                                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
-                                        {/* Checkout button */}
-                                        <Button variant="contained" color="success">
+                                    <Typography sx={{ whiteSpace: 'pre-wrap', mr: 110 }}>
+                                           Total Price: {booking.quantity*booking.price}
+                                        </Typography>
+
+                                        <Button variant="contained" color="success" onClick={() => handleCheckout(booking.id)}>
                                             <ShoppingCart />
                                             Checkout
                                         </Button>
@@ -168,6 +198,7 @@ function Cart() {
                     </Button>
                 </DialogActions>
             </Dialog>
+            <ToastContainer />
         </Box>
     );
 }
