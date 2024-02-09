@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
@@ -8,29 +9,32 @@ import * as yup from 'yup';
 import http from '../http';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import UserContext from '../contexts/UserContext';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 
 
 function AddBooking() {
     const navigate = useNavigate();
+    const { user } = useContext(UserContext);
     const showToastMessage = () => {
-        toast.success("Booking successfully added to cart", { 
+        toast.success("Booking successfully added to cart", {
         });
-      };
+    };
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const nameFromURL = urlSearchParams.get('name');
+    const priceFromURL = urlSearchParams.get('price');
 
     const formik = useFormik({
         initialValues: {
-            name: "",
-            activity: "",
+            name: user.name,
+            activity: nameFromURL || "",
             date: dayjs(),
             time: "",
             quantity: "",
+            price: priceFromURL || "",
         },
         validationSchema: yup.object({
-            name: yup.string().trim()
-                .min(3, 'Name must be at least 3 characters')
-                .max(100, 'Name must be at most 100 characters')
-                .required('Name is required'),
+
             activity: yup.string().trim()
                 .min(3, 'Activity must be at least 3 characters')
                 .max(100, 'Activity must be at most 100 characters')
@@ -40,12 +44,11 @@ function AddBooking() {
                 .required('Time is required'),
             quantity: yup.number().integer()
                 .min(1, 'Quantity cannot be below 1')
-                .max(10, 'Quantity cannot be above 10')
+                .max(100, 'Quantity cannot be above 100')
                 .required('Quantity is required')
 
         }),
         onSubmit: (data) => {
-            data.name = data.name.trim();
             data.activity = data.activity;
             data.date = new Date(data.date);
             data.time = data.time.trim();
@@ -72,18 +75,8 @@ function AddBooking() {
                 Add Booking
             </Typography>
             <Box component="form" onSubmit={formik.handleSubmit}>
-                <TextField
-                    fullWidth margin="dense" autoComplete="off"
-                    label="Name"
-                    name="name"
-                    value={formik.values.name}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.name && Boolean(formik.errors.name)}
-                    helperText={formik.touched.name && formik.errors.name}
-                    sx={{ marginBottom: 2 }}
-
-                />
+                <Typography sx={{ mb: 2 }}>Name: {user.name}</Typography>
+                <Typography sx={{ mb: 2 }}>Price: {priceFromURL}</Typography>
                 <TextField
                     fullWidth margin="dense" autoComplete="off"
                     label="Activity Name"
@@ -129,7 +122,7 @@ function AddBooking() {
                 />
                 <TextField
                     fullWidth margin="dense" autoComplete="off"
-                    label="Quantity"
+                    label="Number of tickets"
                     name="quantity"
                     value={formik.values.quantity}
                     onChange={formik.handleChange}
