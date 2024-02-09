@@ -37,8 +37,10 @@ import http from './http';
 import UserContext from './contexts/UserContext';
 import EditAccount from './pages/EditAccount';
 import ViewAccount from './pages/ViewAccount';
+import ViewAccountAdmin from './pages/ViewAccountAdmin';
 import ActivitiesPriceAscending from './pages/ActivitiesPriceAscending';
 import ActivitiesPriceDescending from './pages/ActivitiesPriceDescending';
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -87,6 +89,7 @@ function App() {
                     <Link to="/bookings" ><Typography sx={{ mr: 2 }}>Bookings</Typography></Link>
                     <Link to="/reviewsadmin" ><Typography sx={{ mr: 2 }}>All Reviews</Typography></Link>
                     <Link to="/issuesraisedadmin" ><Typography sx={{ mr: 2 }}>Issues Raised</Typography></Link>
+                    <Link to="/viewaccountadmin" ><Typography sx={{ mr: 2 }}>All Accounts</Typography></Link>
                   </>
                   ) : (
                   <>
@@ -99,6 +102,7 @@ function App() {
                     <Link to="/cart" ><Typography sx={{ mr: 2 }}>Your Cart</Typography></Link>
                   </>
                   )}
+                  
 
                   <IconButton onClick={handleClick}>
                     <AccountCircle sx={{ fontSize: 30 }} />
@@ -159,6 +163,7 @@ function App() {
               <Route path={"/userlogin"} element={<UserLogin />} />
               <Route path={"/viewaccount"} element={<ViewAccount />} />
               <Route path={"/editaccount"} element={<EditAccount />} />
+              <Route path={"/viewaccountadmin"} element={<ViewAccountAdmin />} />
               <Route path={"/form"} element={<MyForm />} />
             </Routes>
           </Container>
