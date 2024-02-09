@@ -140,7 +140,7 @@ function AddBooking() {
                 />
 
                 <Box sx={{ mt: 2 }}>
-                    <Button variant="contained" type="submit" onClick={showToastMessage}>
+                    <Button variant="contained" type="submit" >
                         Add
                     </Button>
                     <ToastContainer />
