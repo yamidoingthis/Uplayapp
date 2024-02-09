@@ -5,8 +5,6 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, I
 import { Clear, AccessTime, AccountCircle } from '@mui/icons-material';
 import http from '../http';
 import dayjs from 'dayjs';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
 
 function EditReviewAdmin() {
     const { id } = useParams();
@@ -33,19 +31,13 @@ function EditReviewAdmin() {
         });
     }, [id]);
 
-    const formik = useFormik({
-        initialValues: review,
-        enableReinitialize: true,
-        validationSchema: yup.object({
-        }),
-        onSubmit: (data) => {
-            http.put(`/review/${id}`, data)
-            .then((res) => {
-                console.log(res.data);
-                navigate("/reviewsadmin");
-            });
-        }
-    });
+    const approveReview = () => {
+        http.put(`/review/approve/${id}`)
+        .then((res) => {
+            console.log(res.data);
+            navigate("/reviewsadmin");
+        });
+    };
 
     const [open, setOpen] = useState(false);
 
@@ -58,11 +50,10 @@ function EditReviewAdmin() {
     };
 
     const hideReview = () => {
-        const updatedReview = { ...review, revStatus: "Hidden"};
-        http.put(`/review/${id}`, updatedReview)
+        http.delete(`/review/hide/${id}`)
         .then((res) => {
             console.log(res.data);
-            navigate("/rejectedreviewsadmin");
+            navigate("/hiddenreviews");
         });
     };
 
@@ -73,7 +64,7 @@ function EditReviewAdmin() {
             </Typography>
             {
                 !loading && (
-                    <Box component="form" onSubmit={formik.handleSubmit}>
+                    <Box component="form">
                         <Box sx={{ alignItems: 'center', mb: 2.5, mt: 3 }}>
                             <Typography variant='body2' sx={{ color: 'text.secondary', mb: 0.5 }}>
                                 User:
@@ -116,7 +107,7 @@ function EditReviewAdmin() {
                         </Box>
 
                         <Box sx={{ mt: 3 }}>
-                            <Button variant="contained" type="submit" sx={{ mr: 2 }}>
+                            <Button variant="contained" sx={{ mr: 2 }} onClick={approveReview}>
                                 Approve
                             </Button>
                             <Button variant="contained"color="error" onClick={handleOpen}>
@@ -142,8 +133,7 @@ function EditReviewAdmin() {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" color="error"
-                        onClick={hideReview}>
+                    <Button variant="contained" color="error" onClick={hideReview}>
                         Reject & Hide
                     </Button>
                 </DialogActions>

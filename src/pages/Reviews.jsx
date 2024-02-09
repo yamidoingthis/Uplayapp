@@ -56,10 +56,7 @@ function Reviews() {
     };
 
     const flagReview = (reviewId) => {
-        console.log("Review ID being sent:", reviewId);
-    
-        const flaggedReview = { ...review, revFlag: "Flagged"};
-        http.put(`/review/${reviewId}`, flaggedReview)
+        http.delete(`/review/flag/${reviewId}`)
             .then((res) => {
                 console.log(res.data);
             })
@@ -96,16 +93,6 @@ function Reviews() {
                     onClick={onClickClear}>
                     <Clear />
                 </IconButton>
-                <Box sx={{ flexGrow: 1 }} />
-                {
-                    user && (
-                        <Link to="/addreview" style={{ textDecoration: 'none' }}>
-                            <Button variant='contained'>
-                                Add
-                            </Button>
-                        </Link>
-                    )
-                }
             </Box>
             {reviewList.length !== 0 && ( 
                 <Grid container alignItems="center" sx={{ mt: 2, mb: 3 }}>
@@ -186,14 +173,14 @@ function Reviews() {
                                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }} color="text.secondary">
                                                 {user.id === review.userId ? (
                                                 <Link to={`/editreview/${review.id}`}>
-                                                    <Tooltip title="Edit review" arrow>
+                                                    <Tooltip title="Edit Review" arrow>
                                                         <IconButton sx={{ padding: '4px' }}>
                                                             <Edit />
                                                         </IconButton>
                                                     </Tooltip>
                                                 </Link>
                                                 ) : (
-                                                <Tooltip title="Flag review" arrow>
+                                                <Tooltip title="Flag Review" arrow>
                                                     <IconButton sx={{ padding: '4px' }} onClick={() => flagReview(review.id)}>
                                                         <Flag />
                                                     </IconButton>

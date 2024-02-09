@@ -18,7 +18,10 @@ function ReviewsAdmin() {
 
     const getReviews = () => {
         http.get('/review').then((res) => {
-            const filteredReviews = res.data.filter(review => review.revStatus !== "Deleted" && review.revStatus !== "Hidden");
+            const flaggedReviews = res.data.filter(review => review.revFlag === "Flagged");
+            const otherReviews = res.data.filter(review => review.revStatus !== "Deleted" && review.revStatus !== "Hidden" && review.revFlag !== "Flagged");
+            const filteredReviews = flaggedReviews.concat(otherReviews);
+        setReviewList(filteredReviews);
             setReviewList(filteredReviews);
         });
     };
@@ -64,7 +67,7 @@ function ReviewsAdmin() {
     return (
         <Box>
             <Typography variant="h5" sx={{ my: 2 }}>
-                Reviews
+                All Reviews
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -158,8 +161,8 @@ function ReviewsAdmin() {
 
                                         <Grid sx={{ display: 'flex', alignItems: 'center'}} color="text.secondary">
                                             {review.revFlag === 'Flagged' && (
-                                            <Typography variant='body2' sx={{ mr: 1 }}>
-                                                This review is flagged.
+                                            <Typography variant='body2' sx={{ mr: 1, color: '#e81515' }}>
+                                                Review has been flagged
                                             </Typography>
                                             )}
                                             

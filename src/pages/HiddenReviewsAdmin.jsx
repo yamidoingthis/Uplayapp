@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import UserContext from '../contexts/UserContext';
 import global from '../global';
 
-function RejectedReviewsAdmin() {
+function HiddenReviewsAdmin() {
     const [reviewList, setReviewList] = useState([]);
     const [search, setSearch] = useState('');
     const { user } = useContext(UserContext);
@@ -61,7 +61,7 @@ function RejectedReviewsAdmin() {
     return (
         <Box>
             <Typography variant="h5" sx={{ my: 2 }}>
-                Rejected Reviews
+                Hidden Reviews
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -107,7 +107,7 @@ function RejectedReviewsAdmin() {
                 </Grid>
 
                 <Typography variant='body2' sx={{ color: 'gray' }}>
-                    {reviewList.length === 1 ? '1 Rejected Review' : `${reviewList.length} Rejected Reviews`}
+                    {reviewList.length === 1 ? '1 Hidden Review' : `${reviewList.length} Hidden Reviews`}
                 </Typography>
             </Grid>
 
@@ -173,4 +173,4 @@ function RejectedReviewsAdmin() {
     );
 }
 
-export default RejectedReviewsAdmin;
+export default HiddenReviewsAdmin;

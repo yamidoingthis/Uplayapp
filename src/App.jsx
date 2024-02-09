@@ -23,7 +23,7 @@ import EditReview from './pages/EditReview';
 import ReviewsAdmin from './pages/ReviewsAdmin';
 import DeletedReviewsAdmin from './pages/DeletedReviewsAdmin';
 import EditReviewAdmin from './pages/EditReviewAdmin';
-import RejectedReviewsAdmin from './pages/RejectedReviewsAdmin';
+import HiddenReviewsAdmin from './pages/HiddenReviewsAdmin';
 import AddComplaint from './pages/AddComplaint';
 import Complaints from './pages/Complaints';
 import EditComplaint from './pages/EditComplaint';
@@ -70,10 +70,6 @@ function App() {
     setMenu(null);
   };
 
- 
-
-  
-
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
@@ -82,14 +78,30 @@ function App() {
             <Container>
               <Toolbar disableGutters={true}>
                 <Grid container alignItems="center">
-                  <Link to="/home"><img src={logo_uplay} alt="Uplay Logo" style={{ height: '35px' }} /></Link>
-                  <Box sx={{ flexGrow: 1 }}></Box>
-                  <Link to="/home" ><Typography sx={{ mr: 2 }}>Home</Typography></Link>
-                  <Link to="/activities" ><Typography sx={{ mr: 2 }}>Activities</Typography></Link>
-                  <Link to="/bookings" ><Typography sx={{ mr: 2 }}>Bookings</Typography></Link>
-                  <Link to="/reviews" ><Typography sx={{ mr: 2 }}>Reviews</Typography></Link>
-                  <Link to="/issuesraised" ><Typography sx={{ mr: 2 }}>Issues Raised</Typography></Link>
-                  <Typography sx={{ mr: 2 }}>Your Cart</Typography>
+                  {user && user.email === "admin@mail.com" ? (
+                  <>
+                    <Link to="/home"><img src={logo_uplay} alt="Uplay Logo" style={{ height: '35px' }} /></Link>
+                    <Box sx={{ flexGrow: 1 }}></Box>
+                    <Link to="/home" ><Typography sx={{ mr: 2 }}>Home</Typography></Link>
+                    <Link to="/activities" ><Typography sx={{ mr: 2 }}>Activities</Typography></Link>
+                    <Link to="/bookings" ><Typography sx={{ mr: 2 }}>Bookings</Typography></Link>
+                    <Link to="/reviewsadmin" ><Typography sx={{ mr: 2 }}>All Reviews</Typography></Link>
+                    <Link to="/issuesraisedadmin" ><Typography sx={{ mr: 2 }}>Issues Raised</Typography></Link>
+                    <Typography sx={{ mr: 2 }}>Your Cart</Typography>
+                  </>
+                  ) : (
+                  <>
+                    <Link to="/home"><img src={logo_uplay} alt="Uplay Logo" style={{ height: '35px' }} /></Link>
+                    <Box sx={{ flexGrow: 1 }}></Box>
+                    <Link to="/home" ><Typography sx={{ mr: 2 }}>Home</Typography></Link>
+                    <Link to="/activities" ><Typography sx={{ mr: 2 }}>Activities</Typography></Link>
+                    <Link to="/bookings" ><Typography sx={{ mr: 2 }}>Bookings</Typography></Link>
+                    <Link to="/reviews" ><Typography sx={{ mr: 2 }}>Reviews</Typography></Link>
+                    <Link to="/issuesraised" ><Typography sx={{ mr: 2 }}>Issues Raised</Typography></Link>
+                    <Typography sx={{ mr: 2 }}>Your Cart</Typography>
+                  </>
+                  )}
+
                   <IconButton onClick={handleClick}>
                     <AccountCircle sx={{ fontSize: 30 }} />
                   </IconButton>
@@ -97,7 +109,7 @@ function App() {
                     {user ? ([
                       <Link to="/viewaccount" style={{ textDecoration: 'none', color: 'black' }}>
                         <MenuItem key="viewProfile" onClick={handleClose}>View Profile</MenuItem>
-                        </Link>,
+                      </Link>,
                       <MenuItem key="logout" onClick={() => { handleClose(); logout(); }} style={{ color: 'black' }}>Logout</MenuItem>
                     ]) : ([
                       <MenuItem key="login" onClick={handleClose}>
@@ -110,7 +122,6 @@ function App() {
                           <Typography>Register</Typography>
                         </Link>
                       </MenuItem>
-                      
                     ])}
                   </Menu>
                 </Grid>
@@ -138,7 +149,7 @@ function App() {
               <Route path={"/reviewsadmin"} element={<ReviewsAdmin />} />
               <Route path={"/deletedreviewsadmin"} element={<DeletedReviewsAdmin />} />
               <Route path={"/moderatereviewadmin/:id"} element={<EditReviewAdmin />} />
-              <Route path={"/rejectedreviewsadmin"} element={<RejectedReviewsAdmin />} />
+              <Route path={"/hiddenreviews"} element={<HiddenReviewsAdmin />} />
               <Route path={"/raiseissue"} element={<AddComplaint />} />
               <Route path={"/issuesraised"} element={<Complaints />} />
               <Route path={"/editissue/:id"} element={<EditComplaint />} />
