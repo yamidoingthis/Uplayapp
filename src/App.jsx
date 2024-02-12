@@ -97,7 +97,6 @@ function App() {
                     <Box sx={{ flexGrow: 1 }}></Box>
                     <Link to="/home" ><Typography sx={{ mr: 2 }}>Home</Typography></Link>
                     <Link to="/activities" ><Typography sx={{ mr: 2 }}>Activities</Typography></Link>
-                    <Link to="/bookings" ><Typography sx={{ mr: 2 }}>Bookings</Typography></Link>
                     <Link to="/cart" ><Typography sx={{ mr: 2 }}>Your Cart</Typography></Link>
                   </>
                   )}
