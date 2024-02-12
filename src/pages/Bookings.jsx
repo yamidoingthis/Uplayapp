@@ -12,6 +12,8 @@ function Bookings() {
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
 
+  const isAdminUser = true;
+
 
   const onSearchChange = (e) => {
     setSearch(e.target.value);
@@ -94,9 +96,12 @@ function Bookings() {
         </IconButton>
 
         <Box sx={{ flexGrow: 1 }} />
-        <Link to="/addbooking" style={{ textDecoration: 'none' }}>
-          <Button variant="contained">Add</Button>
-        </Link>
+        {/* Render the "Add" button only if the user is not an admin */}
+        {!isAdminUser && (
+          <Link to="/addbooking" style={{ textDecoration: 'none' }}>
+            <Button variant="contained">Add</Button>
+          </Link>
+        )}
       </Box>
 
       <TableContainer component={Paper}>
