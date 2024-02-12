@@ -51,9 +51,6 @@ function ReviewsAdmin() {
         getReviews();
     };
 
-    const totalRatings = reviewList.reduce((acc, review) => acc + review.revStar, 0);
-    const averageRating = totalRatings / reviewList.length;
-
     const [formats, setFormats] = React.useState([]);
 
     const handleFormat = (event, newFormats) => {
@@ -84,29 +81,6 @@ function ReviewsAdmin() {
                 </IconButton>
                 <Box sx={{ flexGrow: 1 }} />
             </Box>
-            {reviewList.length !== 0 && ( 
-                <Grid container alignItems="center" sx={{ mt: 2, mb: 3 }}>
-                    <Grid container alignItems="center" sx={{ width: 110 }}>
-                        <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-                            {averageRating.toFixed(1)}
-                        </Typography>
-                        
-                        <Typography variant="h6" sx={{ ml: 1}}>
-                            out of 5
-                        </Typography>
-                    </Grid>
-                    
-                    <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
-                        <Rating
-                        name="star"
-                        value={averageRating}
-                        size="large"
-                        precision={0.5}
-                        readOnly 
-                        />
-                    </Box>
-                </Grid>
-            )}
 
             <Grid container justifyContent="space-between" alignItems="center">
                 <Grid container justifyContent="space-between" alignItems="center" sx={{ width: 480 }}>
@@ -204,7 +178,7 @@ function ReviewsAdmin() {
                                             Posted on {dayjs(review.createdAt).format('MMMM D, YYYY')}
                                         </Typography>
                                     </Box>
-                                    <Box sx={{ mt: 3.5 }}>
+                                    <Box sx={{ mt: 3 }}>
                                         <hr />
                                     </Box>
                                 </Grid>

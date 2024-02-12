@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Box, Typography, Grid, Input, Button, IconButton, ToggleButton, ToggleButtonGroup, Rating, Tooltip} from '@mui/material';
 import { AccountCircle, AccessTime, Search, Clear, Edit, Flag} from '@mui/icons-material';
 import http from '../http';
@@ -8,25 +8,22 @@ import UserContext from '../contexts/UserContext';
 import global from '../global';
 
 function Reviews() {
+    const { id } = useParams();
+
     const [reviewList, setReviewList] = useState([]);
+    const [starList, setStarList] = useState([]);
     const [search, setSearch] = useState('');
     const { user } = useContext(UserContext);
-
-    const [review, setReview] = useState({
-        RevStar: 0,
-        RevDesc: "",
-        RevStatus: "",
-        RevFlag: ""
-    });
 
     const onSearchChange = (e) => {
         setSearch(e.target.value);
     };
 
     const getReviews = () => {
-        http.get('/review').then((res) => {
+        http.get(`/review/activity/${id}`).then((res) => {
             const filteredReviews = res.data.filter(review => review.revStatus !== "Deleted" && review.revStatus !== "Hidden");
             setReviewList(filteredReviews);
+            setStarList(filteredReviews);
         });
     };
 
@@ -55,6 +52,23 @@ function Reviews() {
         getReviews();
     };
 
+    const [activity, setActivity] = useState({
+        name: "",
+    });
+
+    useEffect(() => {
+        reviewList.forEach(review => {
+            if (review.activityId) {
+                http.get(`/Activity/${id}`).then((res) => {
+                    setActivity(res.data);
+                    
+                }).catch(error => {
+                    console.error('Error fetching activity:', error);
+                });
+            }
+        });
+    }, [reviewList]);
+
     const flagReview = (reviewId) => {
         http.delete(`/review/flag/${reviewId}`)
             .then((res) => {
@@ -62,8 +76,8 @@ function Reviews() {
             })
     };
 
-    const totalRatings = reviewList.reduce((acc, review) => acc + review.revStar, 0);
-    const averageRating = totalRatings / reviewList.length;
+    const totalRatings = starList.reduce((acc, review) => acc + review.revStar, 0);
+    const averageRating = totalRatings / starList.length;
 
     const [formats, setFormats] = React.useState([]);
 
@@ -78,7 +92,7 @@ function Reviews() {
     return (
         <Box>
             <Typography variant="h5" sx={{ my: 2 }}>
-                Reviews
+                Reviews for {activity.name}
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -94,14 +108,14 @@ function Reviews() {
                     <Clear />
                 </IconButton>
             </Box>
-            {reviewList.length !== 0 && ( 
+            {starList.length !== 0 && ( 
                 <Grid container alignItems="center" sx={{ mt: 2, mb: 3 }}>
                     <Grid container alignItems="center" sx={{ width: 110 }}>
                         <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                             {averageRating.toFixed(1)}
                         </Typography>
                         
-                        <Typography variant="h6" sx={{ ml: 1}}>
+                        <Typography variant="h6" sx={{ ml: 1 }}>
                             out of 5
                         </Typography>
                     </Grid>
@@ -170,7 +184,7 @@ function Reviews() {
                                             </Typography>
                                         
                                         {user && (
-                                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }} color="text.secondary">
+                                            <Box sx={{ display: 'flex', alignItems: 'center'}} color="text.secondary">
                                                 {user.id === review.userId ? (
                                                 <Link to={`/editreview/${review.id}`}>
                                                     <Tooltip title="Edit Review" arrow>
@@ -218,7 +232,7 @@ function Reviews() {
                                             Posted on {dayjs(review.createdAt).format('MMMM D, YYYY')}
                                         </Typography>
                                     </Box>
-                                    <Box sx={{ mt: 3.5 }}>
+                                    <Box sx={{ mt: 3 }}>
                                         <hr />
                                     </Box>
                                 </Grid>

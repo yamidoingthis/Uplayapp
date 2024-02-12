@@ -120,7 +120,7 @@ function AddComplaint() {
                     fullWidth margin="normal" autoComplete="off"
                     multiline minRows={6}
                     name="ComDesc"
-                    placeholder="Elaborate on the problem(s) you faced"
+                    placeholder="Elaborate on the problem(s) you faced in detail"
                     value={formik.values.ComDesc}
                     onChange={(e) => {
                         if (e.target.value.length <= ComDescMaxCharacterLimit) {

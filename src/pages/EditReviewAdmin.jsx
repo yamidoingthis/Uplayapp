@@ -13,8 +13,17 @@ function EditReviewAdmin() {
     const [review, setReview] = useState({
         RevStar: 0,
         RevDesc: "",
-        RevStatus: ""
+        RevStatus: "",
+        ActivityId: 0
     });
+
+    const [activity, setActivity] = useState({
+        name: "",
+        description: "",
+        location: "",
+        price: 0.00
+    });
+
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -26,10 +35,21 @@ function EditReviewAdmin() {
                 RevStar: res.data.revStar,
                 RevDesc: res.data.revDesc,
                 RevStatus: res.data.revStatus,
-                RevFlag: res.data.revFlag
+                RevFlag: res.data.revFlag,
+                ActivityId: res.data.activityId
+
             });
         });
     }, [id]);
+
+    useEffect(() => {
+        if (review.activityId && review.activityId !== 0) {
+            http.get(`/Activity/${review.activityId}`).then((res) => {
+                console.log(res.data);
+                setActivity(res.data);
+            });
+        }
+    }, [review.activityId]);
 
     const approveReview = () => {
         http.put(`/review/approve/${id}`)
@@ -62,11 +82,60 @@ function EditReviewAdmin() {
             <Typography variant="h5" sx={{ my: 2 }}>
                 Moderate Review
             </Typography>
+
+            <Typography variant="h6" sx={{ mt: 2 }}>
+                Activity Details
+            </Typography>
+
+            <Box sx={{ alignItems: 'center', mb: 2, mt: 2 }}>
+                <Typography variant='body2' sx={{ color: 'text.secondary'}}>
+                    Activity Name:
+                </Typography>
+                
+                <Typography fontSize={17.5}>
+                    {activity.name}
+                </Typography>
+            </Box>
+
+            <Box sx={{ alignItems: 'center', mb: 2, mt: 2 }}>
+                <Typography variant='body2' sx={{ color: 'text.secondary'}}>
+                    Activity Description:
+                </Typography>
+                
+                <Typography fontSize={17.5}>
+                    {activity.description}
+                </Typography>
+            </Box>
+
+            <Box sx={{ alignItems: 'center', mb: 2, mt: 2 }}>
+                <Typography variant='body2' sx={{ color: 'text.secondary'}}>
+                    Location:
+                </Typography>
+                
+                <Typography fontSize={17.5}>
+                    {activity.location}
+                </Typography>
+            </Box>
+
+            <Box sx={{ alignItems: 'center', mb: 2, mt: 2 }}>
+                <Typography variant='body2' sx={{ color: 'text.secondary'}}>
+                    Price:
+                </Typography>
+                
+                <Typography fontSize={17.5}>
+                    ${activity.price}
+                </Typography>
+            </Box>
+
             {
                 !loading && (
                     <Box component="form">
-                        <Box sx={{ alignItems: 'center', mb: 2.5, mt: 3 }}>
-                            <Typography variant='body2' sx={{ color: 'text.secondary', mb: 0.5 }}>
+                        <Box sx={{ alignItems: 'center', mb: 2, mt: 2 }}>
+                            <Typography variant="h6">
+                                Review Details
+                            </Typography>
+
+                            <Typography variant='body2' sx={{ color: 'text.secondary', mt: 2}}>
                                 User:
                             </Typography>
                             <Box sx={{ display: 'flex'}}>
@@ -77,8 +146,8 @@ function EditReviewAdmin() {
                             </Box>
                         </Box>
 
-                        <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2.5, mt: 3 }}>
-                            <Typography variant='body2' sx={{ color: 'text.secondary', mb: 0.5 }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2, mt: 2 }}>
+                            <Typography variant='body2' sx={{ color: 'text.secondary'}}>
                                 Stars:
                             </Typography>
                             
@@ -89,8 +158,8 @@ function EditReviewAdmin() {
                             readOnly />
                         </Box>
                         
-                        <Box sx={{ alignItems: 'center', mb: 2.5, mt: 3 }}>
-                            <Typography variant='body2' sx={{ color: 'text.secondary', mb: 0.5 }}>
+                        <Box sx={{ alignItems: 'center', mb: 2, mt: 2 }}>
+                            <Typography variant='body2' sx={{ color: 'text.secondary'}}>
                                 Description:
                             </Typography>
                             
@@ -106,7 +175,7 @@ function EditReviewAdmin() {
                             </Typography>
                         </Box>
 
-                        <Box sx={{ mt: 3 }}>
+                        <Box sx={{ mt: 3, mb: 4 }}>
                             <Button variant="contained" sx={{ mr: 2 }} onClick={approveReview}>
                                 Approve
                             </Button>
