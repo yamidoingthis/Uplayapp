@@ -146,6 +146,11 @@ function Activities() {
                                                 View More
                                             </Typography>
                                         </Link>
+                                        <Link to={`/reviews/${tutorial.id}`}>
+                                            <Typography>
+                                                View Reviews
+                                            </Typography>
+                                        </Link>
                                         <Link to={`/addreview/${tutorial.id}`}>
                                             <Typography>
                                                 Add Review

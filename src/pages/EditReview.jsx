@@ -14,7 +14,8 @@ function EditReview() {
     const [review, setReview] = useState({
         RevStar: 0,
         RevDesc: "",
-        RevStatus: ""
+        RevStatus: "",
+        ActivityId: 0
     });
     const [loading, setLoading] = useState(true);
 
@@ -27,7 +28,8 @@ function EditReview() {
                 RevStar: res.data.revStar,
                 RevDesc: res.data.revDesc,
                 RevStatus: "Edited",
-                RevFlag: res.data.revFlag
+                RevFlag: res.data.revFlag,
+                ActivityId: res.data.activityId
             });
         });
     }, [id]);
@@ -50,7 +52,7 @@ function EditReview() {
             http.put(`/review/${id}`, data)
             .then((res) => {
                 console.log(res.data);
-                navigate("/reviews");
+                navigate(`/reviews/${data.ActivityId}`);
             });
         }
     });
@@ -69,7 +71,7 @@ function EditReview() {
         http.delete(`/review/${id}`)
         .then((res) => {
             console.log(res.data);
-            navigate("/reviews");
+            navigate(`/reviews/${review.activityId}`);
         });
     };
 

@@ -97,8 +97,7 @@ function App() {
                     <Box sx={{ flexGrow: 1 }}></Box>
                     <Link to="/home" ><Typography sx={{ mr: 2 }}>Home</Typography></Link>
                     <Link to="/activities" ><Typography sx={{ mr: 2 }}>Activities</Typography></Link>
-                    <Link to="/reviews" ><Typography sx={{ mr: 2 }}>Reviews</Typography></Link>
-                    <Link to="/issuesraised" ><Typography sx={{ mr: 2 }}>Issues Raised</Typography></Link>
+                    <Link to="/bookings" ><Typography sx={{ mr: 2 }}>Bookings</Typography></Link>
                     <Link to="/cart" ><Typography sx={{ mr: 2 }}>Your Cart</Typography></Link>
                   </>
                   )}
@@ -111,6 +110,12 @@ function App() {
                     {user ? ([
                       <Link to="/viewaccount" style={{ textDecoration: 'none', color: 'black' }}>
                         <MenuItem key="viewProfile" onClick={handleClose}>View Profile</MenuItem>
+                      </Link>,
+                      <Link to="/myreviews" style={{ textDecoration: 'none', color: 'black' }}>
+                        <MenuItem key="myreviews" onClick={handleClose}>My Reviews</MenuItem>
+                      </Link>,
+                      <Link to="/issuesraised" style={{ textDecoration: 'none', color: 'black' }}>
+                        <MenuItem key="issuesraised" onClick={handleClose}>Issues Raised</MenuItem>
                       </Link>,
                       <MenuItem key="logout" onClick={() => { handleClose(); logout(); }} style={{ color: 'black' }}>Logout</MenuItem>
                     ]) : ([
@@ -146,7 +151,7 @@ function App() {
               <Route path={"/addactivity"} element={<AddActivity />} />
               <Route path={"/editactivity/:id"} element={<EditActivity />} />
               <Route path={"/addreview/:id"} element={<AddReview />} />
-              <Route path={"/reviews"} element={<Reviews />} />
+              <Route path={"/reviews/:id"} element={<Reviews />} />
               <Route path={"/editreview/:id"} element={<EditReview />} />
               <Route path={"/reviewsadmin"} element={<ReviewsAdmin />} />
               <Route path={"/deletedreviewsadmin"} element={<DeletedReviewsAdmin />} />

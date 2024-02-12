@@ -88,7 +88,7 @@ function Complaints() {
                                                     <Grid sx={{ display: 'flex', alignItems: 'center'}} color="text.secondary">
                                                         
                                                         {complaint.comStatus === 'Addressed' && (
-                                                        <CheckCircleOutline sx={{ padding: '4px', color: 'green', fontSize: '16px' }}/>
+                                                        <CheckCircleOutline sx={{ padding: '4px', color: 'green', fontSize: '25px' }}/>
                                                         )}
 
                                                         <Typography variant='body2' sx={{ mr: 1, 
@@ -110,30 +110,33 @@ function Complaints() {
                                                     )}
                                                 </Box>
 
-                                                <Box sx={{ alignItems: 'center', mt: 2, mb: 2.5 }}>
-                                                    { complaint.comSugg && (
-                                                        <Typography variant='body2' sx={{ color: 'text.secondary', mb: 0.5 }}>
-                                                            Description:
-                                                        </Typography>
+                                                <Box sx={{ alignItems: 'center', mt: 2, mb: 2 }}>
+                                                    {complaint.comSugg && (
+                                                    <>
+                                                    <Typography variant='body2' sx={{ color: 'text.secondary' }}>
+                                                        Description:
+                                                    </Typography>
+                                                    </>
                                                     )}
 
-                                                    <Typography fontSize={17.5}>
+                                                    <Typography fontSize={17.5} sx={{ mb: 2.5 }}>
                                                         {complaint.comDesc}
-                                                    </Typography>   
+                                                    </Typography>
+
+                                                    {complaint.comSugg && (
+                                                    <>
+                                                    <Typography variant='body2' sx={{ color: 'text.secondary'}}>
+                                                        Proposed Solution:
+                                                    </Typography>
+                                                    <Typography fontSize={17.5} sx={{ mb: 2.5 }}>
+                                                        {complaint.comSugg}
+                                                    </Typography>
+                                                    </>
+                                                    )}
                                                 </Box>
 
-                                                { complaint.comSugg && (
-                                                    <Box sx={{ alignItems: 'center', mb: 2.5, mt: 3 }}>
-                                                        <Typography variant='body2' sx={{ color: 'text.secondary', mb: 0.5 }}>
-                                                            Proposed Solution:
-                                                        </Typography>
-                                                        <Typography fontSize={17.5}>
-                                                            {complaint.comSugg}
-                                                        </Typography>
-                                                    </Box>
-                                                )}
 
-                                                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }} color="text.secondary">
+                                                <Box sx={{ display: 'flex', alignItems: 'center'}} color="text.secondary">
                                                     <AccessTime sx={{ fontSize: 20, mr: 1 }} />
                                                     <Typography variant='body2'>
                                                         Issue raised on {dayjs(complaint.createdAt).format('MMMM D, YYYY')}
