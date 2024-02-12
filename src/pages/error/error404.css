@@ -72,7 +72,7 @@
     color: #fff;
     text-decoration: none;
     border: none;
-    background: #5c91fe;
+    background: orange;
     padding: 10px 40px;
     font-size: 14px;
     font-weight: 700;
@@ -83,7 +83,7 @@
   }
   
   .notfound a:hover {
-    opacity: 0.8;
+    opacity: 0.9;
   }
   
   @media only screen and (max-width: 767px) {

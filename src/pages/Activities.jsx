@@ -70,7 +70,7 @@ function Activities() {
     };
 
     const handleSortOptionClick = (sortOption) => {
-        
+
         console.log('Selected sort option:', sortOption);
 
         // Close the menu
@@ -101,7 +101,7 @@ function Activities() {
                     variant="contained"
                     endIcon={<ArrowDropDown />}
                     onClick={openSortMenu}
-                    sx={{ marginRight: 2}}
+                    sx={{ marginRight: 2 }}
                 >
                     Sort By
                 </Button>
@@ -111,13 +111,13 @@ function Activities() {
                     onClose={closeSortMenu}
                 >
                     <MenuItem onClick={() => handleSortOptionClick('recentlyAdded')}>
-                        <Link to="/activities" style={{ textDecoration: 'none' , color: "black"  }}>Recently Added</Link>
+                        <Link to="/activities" style={{ textDecoration: 'none', color: "black" }}>Recently Added</Link>
                     </MenuItem>
                     <MenuItem onClick={() => handleSortOptionClick('mostExpensiveFirst')}>
                         <Link to="/activitiespricedescending" style={{ textDecoration: 'none', color: "black" }}>Most Expensive First</Link>
                     </MenuItem>
                     <MenuItem onClick={() => handleSortOptionClick('cheapestFirst')}>
-                        <Link to="/activitiespriceascending" style={{ textDecoration: 'none',  color: "black"  }}>Cheapest First</Link>
+                        <Link to="/activitiespriceascending" style={{ textDecoration: 'none', color: "black" }}>Cheapest First</Link>
                     </MenuItem>
                 </Menu>
                 {user && (
@@ -172,15 +172,15 @@ function Activities() {
                                     <Typography sx={{ whiteSpace: 'pre-wrap' }}>
                                         Price: ${tutorial.price}
                                     </Typography>
-                                    <Link to={`/activity/${tutorial.id}`}>
-                                        <Typography>View More</Typography>
-                                    </Link>
-                                    <Link to={`/reviews/${tutorial.id}`}>
-                                        <Typography>View Reviews</Typography>
-                                    </Link>
-                                    <Link to={`/addreview/${tutorial.id}`}>
-                                        <Typography>Add Review</Typography>
-                                    </Link>
+                                    <Button component={Link} to={`/activity/${tutorial.id}`} variant="outlined" sx={{ width: '100%', backgroundColor: 'orange', color: 'black'}}>
+                                        Click here to book !!
+                                    </Button>
+                                    <Button component={Link} to={`/reviews/${tutorial.id}`} variant="outlined" sx={{ mt: 1 , backgroundColor: '#ffbd03', color: 'black', mr: 9.3}}>
+                                        View Reviews
+                                    </Button>
+                                    <Button component={Link} to={`/addreview/${tutorial.id}`} variant="outlined" sx={{ mt: 1 , backgroundColor: '#ffbd03', color: 'black'}}>
+                                        Add Review
+                                    </Button>
                                 </CardContent>
                             </Card>
                         </Grid>

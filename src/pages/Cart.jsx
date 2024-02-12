@@ -163,7 +163,7 @@ function Cart() {
                                        
                                     </CardContent>
                                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
-                                    <Typography sx={{ whiteSpace: 'pre-wrap', mr: 110 }}>
+                                    <Typography sx={{ whiteSpace: 'pre-wrap', mr: 110, fontWeight:'bold' }}>
                                            Total Price: {booking.quantity*booking.price}
                                         </Typography>
 
