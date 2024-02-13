@@ -39,8 +39,11 @@ import UserContext from './contexts/UserContext';
 import EditAccount from './pages/EditAccount';
 import ViewAccount from './pages/ViewAccount';
 import ViewAccountAdmin from './pages/ViewAccountAdmin';
+import ForgotPassword from './pages/ForgotPassword';
+import ConfirmPassword from './pages/ConfirmPassword';
 import ActivitiesPriceAscending from './pages/ActivitiesPriceAscending';
 import ActivitiesPriceDescending from './pages/ActivitiesPriceDescending';
+import ChangePassword from './pages/ChangePassword';
 
 
 function App() {
@@ -169,6 +172,9 @@ function App() {
               <Route path={"/viewaccount"} element={<ViewAccount />} />
               <Route path={"/editaccount"} element={<EditAccount />} />
               <Route path={"/viewaccountadmin"} element={<ViewAccountAdmin />} />
+              <Route path={"/forgotpassword"} element={<ForgotPassword />} />
+              <Route path={"/confirmpassword"} element={<ConfirmPassword />} />
+              <Route path={"/changepassword"} element={<ChangePassword />} />
               <Route path={"/form"} element={<MyForm />} />
               {/* Error pages */}
               <Route path="/404" element={<Error404 />} />

@@ -13,6 +13,10 @@ function EditAccount() {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
+    const handlebutton = () => {
+        navigate('/changepassword');
+    };
+
     const formik = useFormik({
         initialValues: {
             phone: user.phone || '',
@@ -84,17 +88,19 @@ function EditAccount() {
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.birthDate && Boolean(formik.errors.birthDate)}
                                 helperText={formik.touched.birthDate && formik.errors.birthDate}
-                                InputLabelProps={{ shrink: true }} 
+                                InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
                     </Grid>
-                    <Box sx={{ mt: 2 }}>
-                        
-                            <Button variant="contained" type="submit">
-                                Update
-                            </Button>
-                        
+                    <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
+                        <Button variant="contained" type="submit">
+                            Update
+                        </Button>
+                        <Button variant="contained" onClick={handlebutton}>
+                            Change password
+                        </Button>
                     </Box>
+
                 </Box>
             )}
 
