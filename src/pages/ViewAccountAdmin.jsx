@@ -15,11 +15,12 @@ function ViewAccountAdmin() {
     };
 
     const searchAccounts = () => {
-        http.get(`/user?search=${search}`).then((res) => {
+        const lowercaseSearch = search.toLowerCase(); 
+        http.get(`/user?search=${lowercaseSearch}`).then((res) => {
             setUsers(res.data);
         });
     };
-
+    
     const getAccounts = () => {
         http.get('/user/all').then((res) => {
             setUsers(res.data);
