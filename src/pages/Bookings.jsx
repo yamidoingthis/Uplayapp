@@ -109,6 +109,8 @@ function Bookings() {
           <TableHead>
             <TableRow>
               <TableCell>Activity</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Time</TableCell>
               <TableCell>Created At</TableCell>
               <TableCell>Quantity</TableCell>
               <TableCell>Made By</TableCell>
@@ -122,6 +124,8 @@ function Bookings() {
                 return (
                   <TableRow key={booking.id}>
                     <TableCell>{booking.activity}</TableCell>
+                    <TableCell>{booking.date}</TableCell>
+                    <TableCell>{booking.time}</TableCell>
                     <TableCell>
                       {dayjs(booking.createdAt).format(global.datetimeFormat)}
                     </TableCell>
