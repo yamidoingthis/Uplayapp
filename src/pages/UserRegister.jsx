@@ -55,17 +55,7 @@ function UserRegister() {
             data.nric = data.nric.trim().toUpperCase();
             data.birthdate = data.birthdate;
             data.password = data.password.trim();
-            if(data.email == "admin@mail.com"){
-                http.post("/Vendor/register", data)
-                .then((res) => {
-                    console.log(res.data);
-                    navigate("/userlogin");
-                })
-                .catch(function (err) {
-                    toast.error(`${err.response.data.message}`);
-                });
-            }
-            else{
+           
             http.post("/user/register", data)
                 .then((res) => {
                     console.log(res.data);
@@ -74,7 +64,7 @@ function UserRegister() {
                 .catch(function (err) {
                     toast.error(`${err.response.data.message}`);
                 });
-            }
+            
         }
     });
 

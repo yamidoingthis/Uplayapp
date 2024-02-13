@@ -30,18 +30,7 @@ function UserLogin() {
         onSubmit: (data) => {
             data.email = data.email.trim().toLowerCase();
             data.password = data.password.trim();
-            if(data.email == "admin@mail.com"){
-                http.post("/Vendor/login", data)
-                .then((res) => {
-                    localStorage.setItem("accessTokenVendor", res.data.accessToken);
-                    setUser(res.data.user);
-                    navigate("/");
-                })
-                .catch(function (err) {
-                    toast.error(`${err.response.data.message}`);
-                });
-            }
-            else{
+            
             http.post("/user/login", data)
                 .then((res) => {
                     localStorage.setItem("accessToken", res.data.accessToken);
@@ -51,7 +40,7 @@ function UserLogin() {
                 .catch(function (err) {
                     toast.error(`${err.response.data.message}`);
                 });
-            }
+            
         }
     });
 
