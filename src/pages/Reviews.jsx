@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Box, Typography, Grid, Input, Button, IconButton, ToggleButton, ToggleButtonGroup, Rating, Tooltip} from '@mui/material';
+import { Box, Typography, Grid, Input, Snackbar, IconButton, ToggleButton, ToggleButtonGroup, Rating, Tooltip} from '@mui/material';
 import { AccountCircle, AccessTime, Search, Clear, Edit, Flag} from '@mui/icons-material';
 import http from '../http';
 import dayjs from 'dayjs';
@@ -57,17 +57,26 @@ function Reviews() {
     });
 
     useEffect(() => {
-        reviewList.forEach(review => {
-            if (review.activityId) {
-                http.get(`/Activity/${id}`).then((res) => {
-                    setActivity(res.data);
-                    
-                }).catch(error => {
-                    console.error('Error fetching activity:', error);
-                });
-            }
+        http.get(`/Activity/${id}`).then((res) => {
+            setActivity(res.data);    
+        
+        }).catch(error => {
+            console.error('Error fetching activity:', error);
         });
-    }, [reviewList]);
+    }, []);
+
+    const [snackbar, setSnackbar] = useState(false);
+
+    const handleClick = () => {
+        setSnackbar(true);
+      };
+    
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setSnackbar(false);
+      };
 
     const flagReview = (reviewId) => {
         http.delete(`/review/flag/${reviewId}`)
@@ -195,11 +204,18 @@ function Reviews() {
                                                 </Link>
                                                 ) : (
                                                 <Tooltip title="Flag Review" arrow>
-                                                    <IconButton sx={{ padding: '4px' }} onClick={() => flagReview(review.id)}>
+                                                    <IconButton sx={{ padding: '4px' }} onClick={() => { flagReview(review.id); handleClick(); }}>
                                                         <Flag />
                                                     </IconButton>
                                                 </Tooltip>
                                                 )}
+                                                <Snackbar
+                                                open={snackbar}
+                                                autoHideDuration={1500}
+                                                onClose={handleClose}
+                                                message="Review flagged"
+                                                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                                />
                                             </Box>
                                         )}
                                     </Box>

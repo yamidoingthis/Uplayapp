@@ -39,7 +39,7 @@ function ComplaintsAdmin() {
     return (
         <Box>
             <Typography variant="h5" sx={{ my: 2 }}>
-                Issues Raised
+                All Issues Raised
             </Typography>
 
             <Grid container justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
@@ -79,7 +79,7 @@ function ComplaintsAdmin() {
                                                         {complaint.user?.name}
                                                     </Typography>
                                                     
-                                                    {user && user.id === complaint.userId && (
+                                                    {user && (
                                                     <Grid sx={{ display: 'flex', alignItems: 'center'}} color="text.secondary">
                                                         
                                                         {complaint.comStatus === 'Addressed' && (
