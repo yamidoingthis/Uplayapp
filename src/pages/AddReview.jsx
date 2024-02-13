@@ -9,21 +9,6 @@ function AddReview() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [tutorial, setTutorial] = useState({
-        name: "",
-        description: "",
-        location: "",
-    });
-
-    useEffect(() => {
-        http.get(`/Activity/${id}`).then((res) => {
-            console.log(res.data);
-            setTutorial(res.data);
-            setImageFile(res.data.imageFile);
-            setLoading(false);
-        });
-    }, []);
-
     const formik = useFormik({
         initialValues: {
             RevStar: "",
@@ -48,7 +33,7 @@ function AddReview() {
             http.post(`/review/${id}`, data)
                 .then((res) => {
                     console.log(res.data);
-                    navigate("/reviews");
+                    navigate(`/reviews/${id}`);
                 });
         }
     });
