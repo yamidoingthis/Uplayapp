@@ -1,17 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Box, Typography, Grid, Input, Snackbar, IconButton, ToggleButton, ToggleButtonGroup, Rating, Tooltip} from '@mui/material';
-import { AccountCircle, AccessTime, Search, Clear, Edit, Flag, Rule} from '@mui/icons-material';
+import { Link } from 'react-router-dom';
+import { Box, Typography, Grid, Input, Snackbar, Button, IconButton, ToggleButton, ToggleButtonGroup, Rating, Tooltip} from '@mui/material';
+import { AccountCircle, AccessTime, Search, Clear, Check } from '@mui/icons-material';
 import http from '../http';
 import dayjs from 'dayjs';
 import UserContext from '../contexts/UserContext';
 import global from '../global';
 
-function ReviewsAdmin() {
-    const { id } = useParams();
-
+function ModerateReviewsAdmin() {
     const [reviewList, setReviewList] = useState([]);
-    const [starList, setStarList] = useState([]);
     const [search, setSearch] = useState('');
     const { user } = useContext(UserContext);
 
@@ -20,10 +17,9 @@ function ReviewsAdmin() {
     };
 
     const getReviews = () => {
-        http.get(`/review/activity/${id}`).then((res) => {
-            const filteredReviews = res.data.filter(review => review.revStatus !== "Deleted" && review.revStatus !== "Hidden");
+        http.get('/review').then((res) => {
+            const filteredReviews = res.data.filter(review => review.revFlag === "Flagged" && review.revStatus !== "Deleted" && review.revStatus !== "Hidden");
             setReviewList(filteredReviews);
-            setStarList(filteredReviews);
         });
     };
 
@@ -52,42 +48,31 @@ function ReviewsAdmin() {
         getReviews();
     };
 
-    const [activity, setActivity] = useState({
-        name: "",
-    });
-
-    useEffect(() => {
-
-                http.get(`/Activity/${id}`).then((res) => {
-                    setActivity(res.data);
-                    
-                }).catch(error => {
-                    console.error('Error fetching activity:', error);
-                });
-    }, []);
-
-    const [snackbar, setSnackbar] = useState(false);
-
-    const handleClick = () => {
-        setSnackbar(true);
-      };
+    const [approveSnackbar, setApproveSnackbar] = useState(false);
+    const [rejectSnackbar, setRejectSnackbar] = useState(false);
     
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-          return;
-        }
-        setSnackbar(false);
+    const handleClose = () => {
+        setApproveSnackbar(false);
+        setRejectSnackbar(false);
       };
 
-    const flagReview = (reviewId) => {
-        http.delete(`/review/flag/${reviewId}`)
-            .then((res) => {
-                console.log(res.data);
-            })
+    const approveReview = (reviewId) => {
+        setApproveSnackbar(true);
+        http.put(`/review/approve/${reviewId}`)
+        .then((res) => {
+            console.log(res.data);
+            getReviews()
+        });
     };
 
-    const totalRatings = starList.reduce((acc, review) => acc + review.revStar, 0);
-    const averageRating = totalRatings / starList.length;
+    const hideReview = (reviewId) => {
+        setRejectSnackbar(true)
+        http.delete(`/review/hide/${reviewId}`)
+        .then((res) => {
+            console.log(res.data);
+            getReviews()
+        });
+    };
 
     const [formats, setFormats] = React.useState([]);
 
@@ -102,11 +87,11 @@ function ReviewsAdmin() {
     return (
         <Box>
             <Typography variant="h5" sx={{ my: 2 }}>
-                Reviews for {activity.name}
+                All Pending Reviews
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <Input value={search} placeholder="Search in reviews"
+                <Input value={search} placeholder="Search in pending reviews"
                     onChange={onSearchChange}
                     onKeyDown={onSearchKeyDown} />
                 <IconButton color="primary"
@@ -117,30 +102,8 @@ function ReviewsAdmin() {
                     onClick={onClickClear}>
                     <Clear />
                 </IconButton>
+                <Box sx={{ flexGrow: 1 }} />
             </Box>
-            {starList.length !== 0 && ( 
-                <Grid container alignItems="center" sx={{ mt: 2, mb: 3 }}>
-                    <Grid container alignItems="center" sx={{ width: 110 }}>
-                        <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-                            {averageRating.toFixed(1)}
-                        </Typography>
-                        
-                        <Typography variant="h6" sx={{ ml: 1 }}>
-                            out of 5
-                        </Typography>
-                    </Grid>
-                    
-                    <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
-                        <Rating
-                        name="star"
-                        value={averageRating}
-                        size="large"
-                        precision={0.5}
-                        readOnly 
-                        />
-                    </Box>
-                </Grid>
-            )}
 
             <Grid container justifyContent="space-between" alignItems="center">
                 <Grid container justifyContent="space-between" alignItems="center" sx={{ width: 480 }}>
@@ -170,45 +133,57 @@ function ReviewsAdmin() {
                 </Grid>
 
                 <Typography variant='body2' sx={{ color: 'gray' }}>
-                    {reviewList.length === 1 ? '1 Review Posted' : `${reviewList.length} Reviews Posted`}
+                    {reviewList.length === 1 ? '1 Pending Review' : `${reviewList.length} Pending Reviews`}
                 </Typography>
             </Grid>
 
             {reviewList.length === 0 ? (
-                <Typography sx={{ mt: 4.5 }}>There are no reviews found.</Typography>
+                <Typography sx={{ mt: 4.5 }}>There are no pending reviews.</Typography>
             ) : (
 
                 filteredReviews.length === 0 ? (
-                    <Typography sx={{ mt: 4.5 }}>There are no reviews found for your selected filter(s).</Typography>
+                    <Typography sx={{ mt: 4.5 }}>There are no pending reviews  for your selected filter(s).</Typography>
                 ) : (
 
                     <Grid container spacing={2} sx={{ mt: 2.5 }}>
                         {
-                            filteredReviews.map((review, i) => {    
+                            filteredReviews.map((review, i) => {
                                 return (
                                     <Grid item xs={12} key={review.id}>
                                     <Box sx={{ display: 'flex', mb: 1, width: '100%' }}>
                                         <AccountCircle sx={{ mr: 1 }} />
                                         <Typography sx={{ flexGrow: 1 }}>
                                             {review.user?.name}
-                                            </Typography>
+                                        </Typography>
                                         
-                                        <Box sx={{ display: 'flex', alignItems: 'center'}} color="text.secondary">
-                                            <Tooltip title="Send For Moderation" arrow>
-                                                <IconButton sx={{ padding: '4px' }} onClick={() => { flagReview(review.id); handleClick(); }}>
-                                                    <Rule />
-                                                </IconButton>
-                                            </Tooltip>
-                                        </Box>
+                                        <Tooltip title="Approve Review" arrow>
+                                            <IconButton sx={{ padding: '4px', mr: 1, color: 'green' }} onClick={() => approveReview(review.id) }>
+                                                <Check />
+                                            </IconButton>
+                                        </Tooltip>
                                         <Snackbar
-                                        open={snackbar}
+                                        open={approveSnackbar}
                                         autoHideDuration={1500}
                                         onClose={handleClose}
-                                        message="Review sent for moderation"
+                                        message="Review has been approved"
+                                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                        />
+                                        
+                                        <Tooltip title="Reject Review" arrow>
+                                            <IconButton sx={{ padding: '4px', color: '#ba000d' }} onClick={() => hideReview(review.id) }>
+                                                <Clear />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Snackbar
+                                        open={rejectSnackbar}
+                                        autoHideDuration={1500}
+                                        onClose={handleClose}
+                                        message="Review has been rejected and hidden"
                                         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                                         />
                                     </Box>
-    
+
+
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                                     <Rating
                                     name="star"
@@ -251,4 +226,4 @@ function ReviewsAdmin() {
     );
 }
 
-export default ReviewsAdmin;
+export default ModerateReviewsAdmin;

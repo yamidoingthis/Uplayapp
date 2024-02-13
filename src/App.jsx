@@ -23,7 +23,7 @@ import Reviews from './pages/Reviews';
 import EditReview from './pages/EditReview';
 import ReviewsAdmin from './pages/ReviewsAdmin';
 import DeletedReviewsAdmin from './pages/DeletedReviewsAdmin';
-import EditReviewAdmin from './pages/EditReviewAdmin';
+import ModerateReviewsAdmin from './pages/ModerateReviewsAdmin';
 import HiddenReviewsAdmin from './pages/HiddenReviewsAdmin';
 import AddComplaint from './pages/AddComplaint';
 import Complaints from './pages/Complaints';
@@ -93,7 +93,7 @@ function App() {
                       <Link to="/home" ><Typography sx={{ mr: 2 }}>Home</Typography></Link>
                       <Link to="/activities" ><Typography sx={{ mr: 2 }}>Activities</Typography></Link>
                       <Link to="/bookings" ><Typography sx={{ mr: 2 }}>Bookings</Typography></Link>
-                      <Link to="/reviewsadmin" ><Typography sx={{ mr: 2 }}>All Reviews</Typography></Link>
+                      <Link to="/moderatereviews" ><Typography sx={{ mr: 2 }}>Pending Reviews</Typography></Link>
                       <Link to="/issuesraisedadmin" ><Typography sx={{ mr: 2 }}>Issues Raised</Typography></Link>
                       <Link to="/viewaccountadmin" ><Typography sx={{ mr: 2 }}>All Accounts</Typography></Link>
                     </>
@@ -112,29 +112,32 @@ function App() {
                     <AccountCircle sx={{ fontSize: 30 }} />
                   </IconButton>
                   <Menu anchorEl={menu} open={Boolean(menu)} onClose={handleClose}>
-                    {user ? ([
+                    {user ? (
+                      <>
                       <Link to="/viewaccount" style={{ textDecoration: 'none', color: 'black' }}>
                         <MenuItem key="viewProfile" onClick={handleClose}>View Profile</MenuItem>
-                      </Link>,
-                      <Link to="/myreviews" style={{ textDecoration: 'none', color: 'black' }}>
-                        <MenuItem key="myreviews" onClick={handleClose}>My Reviews</MenuItem>
-                      </Link>,
-                      <Link to="/issuesraised" style={{ textDecoration: 'none', color: 'black' }}>
-                        <MenuItem key="issuesraised" onClick={handleClose}>Issues Raised</MenuItem>
-                      </Link>,
+                      </Link>
+                      {user.email !== "admin@mail.com" && (
+                        <Link to="/issuesraised" style={{ textDecoration: 'none', color: 'black' }}>
+                          <MenuItem key="issuesraised" onClick={handleClose}>Issues Raised</MenuItem>
+                        </Link>
+                      )}
                       <MenuItem key="logout" onClick={() => { handleClose(); logout(); }} style={{ color: 'black' }}>Logout</MenuItem>
-                    ]) : ([
+                      </>
+                      ) : (
+                      <>
                       <MenuItem key="login" onClick={handleClose}>
                         <Link to="/userlogin" style={{ textDecoration: 'none', color: 'black' }}>
                           <Typography>Login</Typography>
                         </Link>
-                      </MenuItem>,
+                      </MenuItem>
                       <MenuItem key="register" onClick={handleClose}>
                         <Link to="/userregister" style={{ textDecoration: 'none', color: 'black' }}>
                           <Typography>Register</Typography>
                         </Link>
                       </MenuItem>
-                    ])}
+                      </>
+                      )}
                   </Menu>
                 </Grid>
               </Toolbar>
@@ -158,9 +161,9 @@ function App() {
               <Route path={"/addreview/:id"} element={<AddReview />} />
               <Route path={"/reviews/:id"} element={<Reviews />} />
               <Route path={"/editreview/:id"} element={<EditReview />} />
-              <Route path={"/reviewsadmin"} element={<ReviewsAdmin />} />
-              <Route path={"/deletedreviewsadmin"} element={<DeletedReviewsAdmin />} />
-              <Route path={"/moderatereviewadmin/:id"} element={<EditReviewAdmin />} />
+              <Route path={"/reviewsadmin/:id"} element={<ReviewsAdmin />} />
+              <Route path={"/deletedreviews"} element={<DeletedReviewsAdmin />} />
+              <Route path={"/moderatereviews"} element={<ModerateReviewsAdmin />} />
               <Route path={"/hiddenreviews"} element={<HiddenReviewsAdmin />} />
               <Route path={"/raiseissue"} element={<AddComplaint />} />
               <Route path={"/issuesraised"} element={<Complaints />} />
