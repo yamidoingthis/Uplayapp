@@ -104,7 +104,6 @@ function App() {
                     </>
                   )}
 
-
                   <IconButton onClick={handleClick}>
                     <AccountCircle sx={{ fontSize: 30 }} />
                   </IconButton>
@@ -116,11 +115,11 @@ function App() {
                         </Link>
                         {user.email !== "admin@mail.com" && (
                           <>
-                            <Link to="/issuesraised" style={{ textDecoration: 'none', color: 'black' }}>
-                              <MenuItem key="issuesraised" onClick={handleClose}>Issues Raised</MenuItem>
-                            </Link>
                             <Link to="/pastbookings" style={{ textDecoration: 'none', color: 'black' }}>
                               <MenuItem key="pastbookings" onClick={handleClose}>Past Bookings</MenuItem>
+                            </Link>
+                            <Link to="/issuesraised" style={{ textDecoration: 'none', color: 'black' }}>
+                              <MenuItem key="issuesraised" onClick={handleClose}>Issues Raised</MenuItem>
                             </Link>
                           </>
                         )}

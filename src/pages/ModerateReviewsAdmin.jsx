@@ -236,7 +236,7 @@ function ModerateReviewsAdmin() {
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }} color="text.secondary">
                                         <AccessTime sx={{ fontSize: 20, mr: 1 }} />
                                         <Typography variant='body2'>
-                                            Posted on {dayjs(review.createdAt).format('MMMM D, YYYY')}
+                                            Posted on {dayjs(review.createdAt).format('MMMM D, YYYY, [at] h:mm A')}
                                         </Typography>
                                     </Box>
                                     <Box sx={{ mt: 3 }}>
@@ -250,21 +250,25 @@ function ModerateReviewsAdmin() {
                 )
             )}
             
-            <Dialog open={dialog} onClose={closeDialog} PaperProps={{ sx: { minWidth: '600px' } }}>
-                <DialogTitle>
-                    Review For {activity.name}
-                </DialogTitle>
+            <Dialog open={dialog} onClose={closeDialog} PaperProps={{ sx: { minWidth: '600px' } }}> 
                 <IconButton onClick={closeDialog} sx={{ position: 'absolute', right: 8, top: 8 }}>
                     <Clear />
                 </IconButton>
+
                 <DialogContent dividers>
-                    <Typography>
-                        {activity.description}
+                    <Typography sx={{ fontWeight: 'bold', fontSize: 18 }}>
+                        Activity Details
                     </Typography>
-                    <Typography sx={{ mt: 2 }}>
+                    <Typography sx={{ mt: 1.5 }}>
+                        Activity: {activity.name}
+                    </Typography>
+                    <Typography sx={{ mt: 1.5 }}>
+                        Description: {activity.description}
+                    </Typography>
+                    <Typography sx={{ mt: 1.5 }}>
                         Location: {activity.location}
                     </Typography>
-                    <Typography sx={{ mt: 2 }}>
+                    <Typography sx={{ mt: 1.5 }}>
                         Price: ${activity.price}
                     </Typography>
                 </DialogContent>

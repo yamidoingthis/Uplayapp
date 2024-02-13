@@ -62,7 +62,7 @@ function ComplaintsAdmin() {
                 </Typography>
             </Grid>
 
-            {complaintList.length === 0 ? (
+            {filteredComplaints.length === 0 ? (
                 <Typography sx={{ mt: 4.5 }}>There are no unaddressed issues.</Typography>
             ) : (
 
@@ -135,7 +135,7 @@ function ComplaintsAdmin() {
                                                 <Box sx={{ display: 'flex', alignItems: 'center'}} color="text.secondary">
                                                     <AccessTime sx={{ fontSize: 20, mr: 1 }} />
                                                     <Typography variant='body2'>
-                                                        Issue raised on {dayjs(complaint.createdAt).format('MMMM D, YYYY')}
+                                                        Issue raised on {dayjs(complaint.createdAt).format('MMMM D, YYYY, [at] h:mm A')}
                                                     </Typography>
                                                 </Box>
 
@@ -153,7 +153,7 @@ function ComplaintsAdmin() {
                                                         <Box sx={{ display: 'flex', alignItems: 'center'}} >
                                                             <AccessTime sx={{ fontSize: 20, mr: 1 }} />
                                                             <Typography variant='body2'>
-                                                                Responded on {dayjs(complaint.respondedAt).format('MMMM D, YYYY')}
+                                                                Responded on {dayjs(complaint.respondedAt).format('MMMM D, YYYY, [at] h:mm A')}
                                                             </Typography>
                                                         </Box>
                                                     </Box>
