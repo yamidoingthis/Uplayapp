@@ -42,14 +42,14 @@ import ConfirmPassword from './pages/ConfirmPassword';
 import ActivitiesPriceAscending from './pages/ActivitiesPriceAscending';
 import ActivitiesPriceDescending from './pages/ActivitiesPriceDescending';
 import ChangePassword from './pages/ChangePassword';
-
+import PastBookings from './pages/PastBookings';
 
 function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    
-      if (localStorage.getItem("accessToken")) {
+
+    if (localStorage.getItem("accessToken")) {
       http.get('/user/auth').then((res) => {
         setUser(res.data.user);
       });
@@ -111,30 +111,35 @@ function App() {
                   <Menu anchorEl={menu} open={Boolean(menu)} onClose={handleClose}>
                     {user ? (
                       <>
-                      <Link to="/viewaccount" style={{ textDecoration: 'none', color: 'black' }}>
-                        <MenuItem key="viewProfile" onClick={handleClose}>View Profile</MenuItem>
-                      </Link>
-                      {user.email !== "admin@mail.com" && (
-                        <Link to="/issuesraised" style={{ textDecoration: 'none', color: 'black' }}>
-                          <MenuItem key="issuesraised" onClick={handleClose}>Issues Raised</MenuItem>
+                        <Link to="/viewaccount" style={{ textDecoration: 'none', color: 'black' }}>
+                          <MenuItem key="viewProfile" onClick={handleClose}>View Profile</MenuItem>
                         </Link>
-                      )}
-                      <MenuItem key="logout" onClick={() => { handleClose(); logout(); }} style={{ color: 'black' }}>Logout</MenuItem>
+                        {user.email !== "admin@mail.com" && (
+                          <>
+                            <Link to="/issuesraised" style={{ textDecoration: 'none', color: 'black' }}>
+                              <MenuItem key="issuesraised" onClick={handleClose}>Issues Raised</MenuItem>
+                            </Link>
+                            <Link to="/pastbookings" style={{ textDecoration: 'none', color: 'black' }}>
+                              <MenuItem key="pastbookings" onClick={handleClose}>Past Bookings</MenuItem>
+                            </Link>
+                          </>
+                        )}
+                        <MenuItem key="logout" onClick={() => { handleClose(); logout(); }} style={{ color: 'black' }}>Logout</MenuItem>
                       </>
-                      ) : (
+                    ) : (
                       <>
-                      <MenuItem key="login" onClick={handleClose}>
-                        <Link to="/userlogin" style={{ textDecoration: 'none', color: 'black' }}>
-                          <Typography>Login</Typography>
-                        </Link>
-                      </MenuItem>
-                      <MenuItem key="register" onClick={handleClose}>
-                        <Link to="/userregister" style={{ textDecoration: 'none', color: 'black' }}>
-                          <Typography>Register</Typography>
-                        </Link>
-                      </MenuItem>
+                        <MenuItem key="login" onClick={handleClose}>
+                          <Link to="/userlogin" style={{ textDecoration: 'none', color: 'black' }}>
+                            <Typography>Login</Typography>
+                          </Link>
+                        </MenuItem>
+                        <MenuItem key="register" onClick={handleClose}>
+                          <Link to="/userregister" style={{ textDecoration: 'none', color: 'black' }}>
+                            <Typography>Register</Typography>
+                          </Link>
+                        </MenuItem>
                       </>
-                      )}
+                    )}
                   </Menu>
                 </Grid>
               </Toolbar>
@@ -175,6 +180,7 @@ function App() {
               <Route path={"/forgotpassword"} element={<ForgotPassword />} />
               <Route path={"/confirmpassword"} element={<ConfirmPassword />} />
               <Route path={"/changepassword"} element={<ChangePassword />} />
+              <Route path={"/pastbookings"} element={<PastBookings />} />
               <Route path={"/form"} element={<MyForm />} />
               {/* Error pages */}
               <Route path="/404" element={<Error404 />} />
