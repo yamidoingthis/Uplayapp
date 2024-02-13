@@ -120,7 +120,7 @@ function Activities() {
                         <Link to="/activitiespriceascending" style={{ textDecoration: 'none', color: "black" }}>Cheapest First</Link>
                     </MenuItem>
                 </Menu>
-                {user && (
+                {user && user.email === 'admin@mail.com' && (
                     <Link to="/addactivity" style={{ textDecoration: 'none' }}>
                         <Button variant="contained">Add</Button>
                     </Link>

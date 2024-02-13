@@ -1,9 +1,18 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import Dropdown from 'react-bootstrap/Dropdown';
-import { Box, Typography, Grid, Card, CardContent, Input, IconButton, Button } from '@mui/material';
-import { AccountCircle, AccessTime, Search, Clear, Edit } from '@mui/icons-material';
+import { useNavigate, Link } from 'react-router-dom';
+import {
+    Box,
+    Typography,
+    Grid,
+    Card,
+    CardContent,
+    Input,
+    IconButton,
+    Button,
+    Menu,
+    MenuItem,
+} from '@mui/material';
+import { AccountCircle, AccessTime, Search, Clear, Edit, ArrowDropDown } from '@mui/icons-material';
 import http from '../http';
 import dayjs from 'dayjs';
 import UserContext from '../contexts/UserContext';
@@ -14,6 +23,7 @@ function ActivitiesPriceAscending() {
     const [search, setSearch] = useState('');
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
+    const [sortMenuAnchor, setSortMenuAnchor] = useState(null);
 
     const onSearchChange = (e) => {
         setSearch(e.target.value);
@@ -37,18 +47,32 @@ function ActivitiesPriceAscending() {
     }, []);
 
     const onSearchKeyDown = (e) => {
-        if (e.key === "Enter") {
+        if (e.key === 'Enter') {
             searchTutorials();
         }
     };
 
     const onClickSearch = () => {
         searchTutorials();
-    }
+    };
 
     const onClickClear = () => {
         setSearch('');
         getTutorials();
+    };
+
+    const openSortMenu = (event) => {
+        setSortMenuAnchor(event.currentTarget);
+    };
+
+    const closeSortMenu = () => {
+        setSortMenuAnchor(null);
+    };
+
+    const handleSortOptionClick = (sortOption) => {
+        console.log('Selected sort option:', sortOption);
+        // Close the menu
+        closeSortMenu();
     };
 
     return (
@@ -58,38 +82,47 @@ function ActivitiesPriceAscending() {
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <Input value={search} placeholder="Search"
+                <Input
+                    value={search}
+                    placeholder="Search"
                     onChange={onSearchChange}
-                    onKeyDown={onSearchKeyDown} />
-                <IconButton color="primary"
-                    onClick={onClickSearch}>
+                    onKeyDown={onSearchKeyDown}
+                />
+                <IconButton color="primary" onClick={onClickSearch}>
                     <Search />
                 </IconButton>
-                <IconButton color="primary"
-                    onClick={onClickClear}>
+                <IconButton color="primary" onClick={onClickClear}>
                     <Clear />
                 </IconButton>
                 <Box sx={{ flexGrow: 1 }} />
-                <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                        Sort By
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                        <Dropdown.Item><Link to="/activities">Recently Added</Link></Dropdown.Item>
-                        <Dropdown.Item><Link to="/activitiespricedescending">Most Expensive First</Link></Dropdown.Item>
-                        <Dropdown.Item><Link to="/activitiespriceascending">Cheapest First</Link></Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
-                {
-                    user && (
-                        <Link to="/addactivity" style={{ textDecoration: 'none' }}>
-                            <Button variant='contained'>
-                                Add
-                            </Button>
-                        </Link>
-                    )
-                }
+                <Button
+                    variant="contained"
+                    endIcon={<ArrowDropDown />}
+                    onClick={openSortMenu}
+                    sx={{ marginRight: 2 }}
+                >
+                    Sort By
+                </Button>
+                <Menu
+                    anchorEl={sortMenuAnchor}
+                    open={Boolean(sortMenuAnchor)}
+                    onClose={closeSortMenu}
+                >
+                    <MenuItem onClick={() => handleSortOptionClick('recentlyAdded')}>
+                        <Link to="/activities" style={{ textDecoration: 'none', color: "black" }}>Recently Added</Link>
+                    </MenuItem>
+                    <MenuItem onClick={() => handleSortOptionClick('mostExpensiveFirst')}>
+                        <Link to="/activitiespricedescending" style={{ textDecoration: 'none', color: "black" }}>Most Expensive First</Link>
+                    </MenuItem>
+                    <MenuItem onClick={() => handleSortOptionClick('cheapestFirst')}>
+                        <Link to="/activitiespriceascending" style={{ textDecoration: 'none', color: "black" }}>Cheapest First</Link>
+                    </MenuItem>
+                </Menu>
+                {user && user.email === 'admin@mail.com' && (
+                    <Link to="/addactivity" style={{ textDecoration: 'none' }}>
+                        <Button variant="contained">Add</Button>
+                    </Link>
+                )}
             </Box>
 
             <Grid container spacing={2}>
@@ -137,18 +170,17 @@ function ActivitiesPriceAscending() {
                                             </Typography>
                                         </Box>
                                         <Typography sx={{ whiteSpace: 'pre-wrap' }}>
-                                            Price: ${tutorial.price}
-                                        </Typography>
-                                        <Link to={`/activity/${tutorial.id}`}>
-                                            <Typography>
-                                                View More
-                                            </Typography>
-                                        </Link>
-                                        <Link to={`/addreview/${tutorial.id}`}>
-                                            <Typography>
-                                                Add Review
-                                            </Typography>
-                                        </Link>
+                                        Price: ${tutorial.price}
+                                    </Typography>
+                                    <Button component={Link} to={`/activity/${tutorial.id}`} variant="outlined" sx={{ width: '100%', backgroundColor: 'orange', color: 'black'}}>
+                                        Click here to book !!
+                                    </Button>
+                                    <Button component={Link} to={`/reviews/${tutorial.id}`} variant="outlined" sx={{ mt: 1 , backgroundColor: '#ffbd03', color: 'black', mr: 9.3}}>
+                                        View Reviews
+                                    </Button>
+                                    <Button component={Link} to={`/addreview/${tutorial.id}`} variant="outlined" sx={{ mt: 1 , backgroundColor: '#ffbd03', color: 'black'}}>
+                                        Add Review
+                                    </Button>
                                     </CardContent>
                                 </Card>
                             </Grid>
