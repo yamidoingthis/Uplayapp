@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Typography, Grid, Input, Snackbar, Button, IconButton, ToggleButton, ToggleButtonGroup, Rating, Tooltip} from '@mui/material';
-import { AccountCircle, AccessTime, Search, Clear, Check } from '@mui/icons-material';
+import { Dialog, DialogTitle, DialogContent, } from '@mui/material';
+import { AccountCircle, AccessTime, Search, Clear, Check, Notes } from '@mui/icons-material';
 import http from '../http';
 import dayjs from 'dayjs';
 import UserContext from '../contexts/UserContext';
@@ -46,6 +47,27 @@ function ModerateReviewsAdmin() {
     const onClickClear = () => {
         setSearch('');
         getReviews();
+    };
+
+    const [dialog, setDialog] = useState(false);
+
+    const [activity, setActivity] = useState({
+        name: "",
+        description: "",
+        location: "",
+        price: 0.00
+    });
+
+    const openDialog = (activityId) => {
+        http.get(`/Activity/${activityId}`).then((res) => {
+            console.log(res.data);
+            setActivity(res.data);
+            setDialog(true);
+        });
+    };
+
+    const closeDialog = () => {
+        setDialog(false);
     };
 
     const [approveSnackbar, setApproveSnackbar] = useState(false);
@@ -155,9 +177,15 @@ function ModerateReviewsAdmin() {
                                         <Typography sx={{ flexGrow: 1 }}>
                                             {review.user?.name}
                                         </Typography>
+
+                                        <Tooltip title="View Activity Details" arrow>
+                                            <IconButton sx={{ padding: '4px', mr: 1, color: 'primary' }} onClick={() => openDialog(review.activityId)}>
+                                                <Notes />
+                                            </IconButton>
+                                        </Tooltip>
                                         
                                         <Tooltip title="Approve Review" arrow>
-                                            <IconButton sx={{ padding: '4px', mr: 1, color: 'green' }} onClick={() => approveReview(review.id) }>
+                                            <IconButton sx={{ padding: '4px', mr: 1, color: 'green' }} onClick={() => approveReview(review.id)}>
                                                 <Check />
                                             </IconButton>
                                         </Tooltip>
@@ -170,7 +198,7 @@ function ModerateReviewsAdmin() {
                                         />
                                         
                                         <Tooltip title="Reject Review" arrow>
-                                            <IconButton sx={{ padding: '4px', color: '#ba000d' }} onClick={() => hideReview(review.id) }>
+                                            <IconButton sx={{ padding: '4px', color: '#ba000d' }} onClick={() => hideReview(review.id)}>
                                                 <Clear />
                                             </IconButton>
                                         </Tooltip>
@@ -182,7 +210,6 @@ function ModerateReviewsAdmin() {
                                         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                                         />
                                     </Box>
-
 
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                                     <Rating
@@ -222,6 +249,26 @@ function ModerateReviewsAdmin() {
                     </Grid>
                 )
             )}
+            
+            <Dialog open={dialog} onClose={closeDialog} PaperProps={{ sx: { minWidth: '600px' } }}>
+                <DialogTitle>
+                    Review For {activity.name}
+                </DialogTitle>
+                <IconButton onClick={closeDialog} sx={{ position: 'absolute', right: 8, top: 8 }}>
+                    <Clear />
+                </IconButton>
+                <DialogContent dividers>
+                    <Typography>
+                        {activity.description}
+                    </Typography>
+                    <Typography sx={{ mt: 2 }}>
+                        Location: {activity.location}
+                    </Typography>
+                    <Typography sx={{ mt: 2 }}>
+                        Price: ${activity.price}
+                    </Typography>
+                </DialogContent>
+            </Dialog>
         </Box>
     );
 }

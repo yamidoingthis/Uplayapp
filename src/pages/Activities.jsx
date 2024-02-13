@@ -175,12 +175,21 @@ function Activities() {
                                     <Button component={Link} to={`/activity/${tutorial.id}`} variant="outlined" sx={{ width: '100%', backgroundColor: 'orange', color: 'black'}}>
                                         Click here to book !!
                                     </Button>
-                                    <Button component={Link} to={`/reviews/${tutorial.id}`} variant="outlined" sx={{ mt: 1 , backgroundColor: '#ffbd03', color: 'black', mr: 9.3}}>
+                                    {user && user.email === 'admin@mail.com' ? (
+                                        <Button component={Link} to={`/reviewsadmin/${tutorial.id}`} variant="outlined" sx={{ mt: 1 , backgroundColor: '#ffbd03', color: 'black', mr: 9.3}}>
                                         View Reviews
-                                    </Button>
-                                    <Button component={Link} to={`/addreview/${tutorial.id}`} variant="outlined" sx={{ mt: 1 , backgroundColor: '#ffbd03', color: 'black'}}>
-                                        Add Review
-                                    </Button>
+                                        </Button>
+                                    ) : (
+                                    <>
+                                        <Button component={Link} to={`/reviews/${tutorial.id}`} variant="outlined" sx={{ mt: 1 , backgroundColor: '#ffbd03', color: 'black', mr: 9.3}}>
+                                            View Reviews
+                                        </Button>
+                                        <Button component={Link} to={`/addreview/${tutorial.id}`} variant="outlined" sx={{ mt: 1 , backgroundColor: '#ffbd03', color: 'black'}}>
+                                            Add Review
+                                        </Button>
+                                    </> 
+                                    )}
+                                    
                                 </CardContent>
                             </Card>
                         </Grid>

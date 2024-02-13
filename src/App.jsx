@@ -22,9 +22,7 @@ import AddReview from './pages/AddReview';
 import Reviews from './pages/Reviews';
 import EditReview from './pages/EditReview';
 import ReviewsAdmin from './pages/ReviewsAdmin';
-import DeletedReviewsAdmin from './pages/DeletedReviewsAdmin';
 import ModerateReviewsAdmin from './pages/ModerateReviewsAdmin';
-import HiddenReviewsAdmin from './pages/HiddenReviewsAdmin';
 import AddComplaint from './pages/AddComplaint';
 import Complaints from './pages/Complaints';
 import EditComplaint from './pages/EditComplaint';
@@ -161,9 +159,7 @@ function App() {
               <Route path={"/reviews/:id"} element={<Reviews />} />
               <Route path={"/editreview/:id"} element={<EditReview />} />
               <Route path={"/reviewsadmin/:id"} element={<ReviewsAdmin />} />
-              <Route path={"/deletedreviews"} element={<DeletedReviewsAdmin />} />
               <Route path={"/moderatereviews"} element={<ModerateReviewsAdmin />} />
-              <Route path={"/hiddenreviews"} element={<HiddenReviewsAdmin />} />
               <Route path={"/raiseissue"} element={<AddComplaint />} />
               <Route path={"/issuesraised"} element={<Complaints />} />
               <Route path={"/editissue/:id"} element={<EditComplaint />} />
