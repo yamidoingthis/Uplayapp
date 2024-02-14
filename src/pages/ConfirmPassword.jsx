@@ -26,9 +26,7 @@ function ConfirmPassword() {
                 })
                 .catch((error) => {                    
                     toast.error('Incorrect password');
-                    setTimeout(() => {
-                        navigate('/viewaccount');
-                    }, 1200);
+                    
                 });
         }
     });

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Box, Typography, TextField, Button } from '@mui/material';
+import { Box, Typography, TextField, Button, Link } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -40,7 +40,6 @@ function UserLogin() {
                 .catch(function (err) {
                     toast.error(`${err.response.data.message}`);
                 });
-            
         }
     });
 
@@ -80,6 +79,9 @@ function UserLogin() {
                     type="submit">
                     Login
                 </Button>
+                <Typography variant="body2" sx={{ mt: 1, verticalAlign: 'middle' }}>
+                    Not registered yet? <Link component="button" onClick={() => navigate('/userregister')} underline="hover">Click here</Link> to start your journey!
+                </Typography>
             </Box>
 
             <ToastContainer />

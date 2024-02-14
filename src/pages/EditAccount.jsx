@@ -25,15 +25,28 @@ function EditAccount() {
         },
         enableReinitialize: true,
         validationSchema: yup.object({
-            phone: yup.string().trim().max(8, 'Phone must be at most 8 characters'),
-            nric: yup.string().trim().max(4, 'NRIC must be at most 4 characters'),
-            birthDate: yup.date(),
+            phone: yup.string().trim().max(8, 'Phone must be at most 8 characters').nullable(),
+            nric: yup.string().trim().max(4, 'NRIC must be at most 4 characters').nullable(),
+            birthDate: yup.date().nullable(),
         }),
         onSubmit: (data) => {
-            data.phone = data.phone.trim();
-            data.nric = data.nric.trim();
-
-            http.put(`/user/update/${user.id}`, data)
+            const updatedData = {}; // Create an object to store only updated fields
+        
+            // Check if each field has changed and add it to the updatedData object if it has
+            if (data.phone !== user.phone) {
+                updatedData.phone = data.phone.trim();
+            }
+            if (data.nric !== user.nric) {
+                updatedData.nric = data.nric.trim();
+            }
+            if (data.birthDate !== user.birthDate) {
+                updatedData.birthDate = data.birthDate;
+            }
+        
+            console.log('Updated Data:', updatedData); // Log the updatedData object
+        
+            // Send updatedData to the server
+            http.put(`/user/update/${user.id}`, updatedData)
                 .then((res) => {
                     toast.success('Account updated successfully');
                     navigate('/viewaccount');
@@ -43,6 +56,8 @@ function EditAccount() {
                     console.error(error);
                 });
         }
+        
+        
     });
 
     useEffect(() => {
@@ -70,7 +85,7 @@ function EditAccount() {
                             />
                             <TextField
                                 fullWidth margin="dense" autoComplete="off"
-                                label="NRIC"
+                                label="NRIC (Last 3 digits and letter)"
                                 name="nric"
                                 value={formik.values.nric}
                                 onChange={formik.handleChange}
@@ -100,8 +115,8 @@ function EditAccount() {
                             Change password
                         </Button>
                     </Box>
-
                 </Box>
+
             )}
 
             <ToastContainer />

@@ -2,6 +2,7 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import { Grid, Box, Container, AppBar, Toolbar, Typography, Button, IconButton, Menu, MenuItem } from '@mui/material';
 import { AccountCircle } from '@mui/icons-material';
+import FaceIcon from '@mui/icons-material/Face';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
@@ -105,8 +106,9 @@ function App() {
                   )}
 
                   <IconButton onClick={handleClick}>
-                    <AccountCircle sx={{ fontSize: 30 }} />
+                    {user ? <FaceIcon sx={{ fontSize: 30 }} /> : <AccountCircle sx={{ fontSize: 30 }} />}
                   </IconButton>
+
                   <Menu anchorEl={menu} open={Boolean(menu)} onClose={handleClose}>
                     {user ? (
                       <>

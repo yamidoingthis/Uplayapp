@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Grid, Card, CardContent, Input, IconButton, Button, Table, TableBody,TableCell,TableContainer,TableHead,TableRow,Paper } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Input, IconButton, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import http from '../http';
 import { AccessTime, Search, Clear, Edit } from '@mui/icons-material';
 import { ToastContainer, toast } from 'react-toastify';
@@ -15,12 +15,12 @@ function ViewAccountAdmin() {
     };
 
     const searchAccounts = () => {
-        const lowercaseSearch = search.toLowerCase(); 
+        const lowercaseSearch = search.toLowerCase();
         http.get(`/user?search=${lowercaseSearch}`).then((res) => {
             setUsers(res.data);
         });
     };
-    
+
     const getAccounts = () => {
         http.get('/user/all').then((res) => {
             setUsers(res.data);
@@ -73,7 +73,7 @@ function ViewAccountAdmin() {
                 </IconButton>
             </Box>
 
-        
+
 
             <TableContainer component={Paper}>
                 <Table>
@@ -88,16 +88,18 @@ function ViewAccountAdmin() {
                     </TableHead>
                     <TableBody>
                         {users.map((user) => (
-                            <TableRow key={user.id}>
-                                <TableCell>{user.name}</TableCell>
-                                <TableCell>{user.email}</TableCell>
-                                <TableCell>{formatDate(user.birthDate)}</TableCell>
-                                <TableCell>{user.nric}</TableCell>
-                                <TableCell>{user.phone}</TableCell>
-                                
-                                
-                            </TableRow>
+                            // Check if the user's email is not "admin@mail.com"
+                            user.email !== 'admin@mail.com' && (
+                                <TableRow key={user.id}>
+                                    <TableCell>{user.name}</TableCell>
+                                    <TableCell>{user.email}</TableCell>
+                                    <TableCell>{formatDate(user.birthDate)}</TableCell>
+                                    <TableCell>{user.nric}</TableCell>
+                                    <TableCell>{user.phone}</TableCell>
+                                </TableRow>
+                            )
                         ))}
+
                     </TableBody>
                 </Table>
             </TableContainer>

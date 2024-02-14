@@ -28,7 +28,7 @@ function ChangePassword() {
             http.post("/user/change-password", data)
                 .then((res) => {
                     toast.success(res.data);
-                    navigate("/");
+                    navigate("/viewaccount");
                 })
                 .catch(function (err) {
                     toast.error(err.response.data);
