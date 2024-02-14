@@ -114,10 +114,10 @@ function Activities() {
                         <Link to="/activities" style={{ textDecoration: 'none', color: "black" }}>Recently Added</Link>
                     </MenuItem>
                     <MenuItem onClick={() => handleSortOptionClick('mostExpensiveFirst')}>
-                        <Link to="/activitiespricedescending" style={{ textDecoration: 'none', color: "black" }}>Most Expensive First</Link>
+                        <Link to="/activitiespricedescending" style={{ textDecoration: 'none', color: "black" }}>Price Descending</Link>
                     </MenuItem>
                     <MenuItem onClick={() => handleSortOptionClick('cheapestFirst')}>
-                        <Link to="/activitiespriceascending" style={{ textDecoration: 'none', color: "black" }}>Cheapest First</Link>
+                        <Link to="/activitiespriceascending" style={{ textDecoration: 'none', color: "black" }}>Price Ascending</Link>
                     </MenuItem>
                 </Menu>
                 {user && user.email === 'admin@mail.com' && (
@@ -145,7 +145,7 @@ function Activities() {
                                         <Typography variant="h6" sx={{ flexGrow: 1 }}>
                                             {tutorial.name}
                                         </Typography>
-                                        {user && user.id === tutorial.vendorId && (
+                                        {user && user.email === "admin@mail.com" && (
                                             <Link to={`/editactivity/${tutorial.id}`}>
                                                 <IconButton color="primary" sx={{ padding: '4px' }}>
                                                     <Edit />
@@ -158,7 +158,7 @@ function Activities() {
                                         color="text.secondary"
                                     >
                                         <AccountCircle sx={{ mr: 1 }} />
-                                        <Typography>{tutorial.vendor?.name}</Typography>
+                                        <Typography>{tutorial.vendor}</Typography>
                                     </Box>
                                     <Box
                                         sx={{ display: 'flex', alignItems: 'center', mb: 1 }}

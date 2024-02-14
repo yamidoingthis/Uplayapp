@@ -14,7 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function AddActivity() {
     const navigate = useNavigate();
-    const [imageFile, setImageFile] = useState(null);
+    const [imageFile, setImageFile] = useState("");
 
     const formik = useFormik({
         initialValues: {
@@ -22,6 +22,7 @@ function AddActivity() {
             Type: "",
             Description: "",
             Location: "",
+            Vendor: "",
             ActivityDate: dayjs().add(1, 'day'),
             Price: 0.00
         },
@@ -40,6 +41,10 @@ function AddActivity() {
                 .min(3, 'Location must be at least 3 characters')
                 .max(500, 'Location must be at most 500 characters')
                 .required('Location is required'),
+            Vendor: yup.string().trim()
+                .min(3, 'Vendor must be at least 3 characters')
+                .max(500, 'Vendor must be at most 500 characters')
+                .required('Vendor is required'),
             ActivityDate: yup.date().typeError('Invalid date').required('Activity Date is required'),
             Price: yup.number().min(0).required('Price is required'),
         }),
@@ -51,6 +56,7 @@ function AddActivity() {
             data.Type = data.Type.trim();
             data.Description = data.Description.trim();
             data.Location = data.Location.trim();
+            data.Vendor = data.Vendor.trim();
             data.ActivityDate = data.ActivityDate;
             data.Price = data.Price;
             http.post("/Activity", data)
@@ -77,6 +83,7 @@ function AddActivity() {
                 }
             })
                 .then((res) => {
+                    console.log(res.data.filename)
                     setImageFile(res.data.filename);
                 })
                 .catch(function (error) {
@@ -143,6 +150,17 @@ function AddActivity() {
                             onBlur={formik.handleBlur}
                             error={formik.touched.Location && Boolean(formik.errors.Location)}
                             helperText={formik.touched.Location && formik.errors.Location}
+                        />
+                        <TextField
+                            fullWidth margin="dense" autoComplete="off"
+                            multiline minRows={2}
+                            label="Vendor"
+                            name="Vendor"
+                            value={formik.values.Vendor}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.Vendor && Boolean(formik.errors.Vendor)}
+                            helperText={formik.touched.Vendor && formik.errors.Vendor}
                         />
                         <Grid item xs={12} md={6}>
                             <FormControl fullWidth margin="dense">

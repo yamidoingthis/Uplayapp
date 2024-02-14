@@ -49,7 +49,7 @@ function Activity() {
                         Description: {activity.description}
                     </Typography>
                     <Typography>
-                        Vendor: {activity.vendor?.name}
+                        Vendor: {activity.vendor}
                     </Typography>
                     <Typography sx={{ whiteSpace: 'pre-wrap' }}>
                         Location: {activity.location}

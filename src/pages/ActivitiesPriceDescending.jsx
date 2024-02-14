@@ -145,21 +145,19 @@ function ActivitiesPriceDescending() {
                                             <Typography variant="h6" sx={{ flexGrow: 1 }}>
                                                 {tutorial.name}
                                             </Typography>
-                                            {
-                                                user && user.id === tutorial.vendorId && (
-                                                    <Link to={`/editactivity/${tutorial.id}`}>
-                                                        <IconButton color="primary" sx={{ padding: '4px' }}>
-                                                            <Edit />
-                                                        </IconButton>
-                                                    </Link>
-                                                )
-                                            }
+                                            {user && user.email === "admin@mail.com" && (
+                                            <Link to={`/editactivity/${tutorial.id}`}>
+                                                <IconButton color="primary" sx={{ padding: '4px' }}>
+                                                    <Edit />
+                                                </IconButton>
+                                            </Link>
+                                        )}
                                         </Box>
                                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}
                                             color="text.secondary">
                                             <AccountCircle sx={{ mr: 1 }} />
                                             <Typography>
-                                                {tutorial.vendor?.name}
+                                                {tutorial.vendor}
                                             </Typography>
                                         </Box>
                                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}
